@@ -2,6 +2,7 @@
     "conventionalCommits.scopes": [
         "Init Project",
         "Flag",
-        "Directory"
+        "Directory",
+        "Storage"
     ]
 }
