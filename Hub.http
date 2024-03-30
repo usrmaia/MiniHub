@@ -1,0 +1,11 @@
+@Hub_HostAddress = http://localhost:5155/api
+
+GET {{Hub_HostAddress}}/Storage/
+Accept: application/json
+
+###
+
+GET {{Hub_HostAddress}}/User/hello
+Accept: application/json
+
+###
