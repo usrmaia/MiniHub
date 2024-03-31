@@ -16,18 +16,30 @@ public class FlagController : ControllerBase
     public FlagController(IFlagService flagService) =>
         _flagService = flagService;
 
+    /// <summary>
+    /// Gets all flags.
+    /// </summary>
     [HttpGet]
     public async Task<List<Flag>> Get() =>
         await _flagService.GetAll();
 
+    /// <summary>
+    /// Gets a flag by its ID.
+    /// </summary>
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(string id) =>
         Ok(await _flagService.GetById(id));
 
+    /// <summary>
+    /// Gets the count of flags.
+    /// </summary>
     [HttpGet("count")]
     public async Task<IActionResult> GetCount() =>
         Ok(await _flagService.GetCount());
 
+    /// <summary>
+    /// Creates a new flag.
+    /// </summary>
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] Flag flag)
     {
@@ -36,6 +48,9 @@ public class FlagController : ControllerBase
         return Ok(await _flagService.Create(flag));
     }
 
+    /// <summary>
+    /// Updates an existing flag.
+    /// </summary>
     [HttpPut]
     public async Task<IActionResult> Put([FromBody] Flag flag)
     {
@@ -44,6 +59,9 @@ public class FlagController : ControllerBase
         return Ok(await _flagService.Update(flag));
     }
 
+    /// <summary>
+    /// Deletes a flag by its ID.
+    /// </summary>
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {

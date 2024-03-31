@@ -27,11 +27,17 @@ public class UserController : ControllerBase
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Gets all users.
+    /// </summary>
     [HttpGet]
     [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
     public async Task<IActionResult> Get() =>
         Ok(await _userService.Get());
 
+    /// <summary>
+    /// Gets a user by ID.
+    /// </summary>
     [HttpGet("{id}")]
     [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
     public async Task<IActionResult> GetById(string id)
@@ -40,6 +46,9 @@ public class UserController : ControllerBase
         return Ok(_mapper.Map<UserDTO>(identityUser));
     }
 
+    /// <summary>
+    /// Gets a user by username.
+    /// </summary>
     [HttpGet("username/{userName}")]
     [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
     public async Task<IActionResult> Get(string userName)
@@ -48,6 +57,9 @@ public class UserController : ControllerBase
         return Ok(_mapper.Map<UserDTO>(identityUser));
     }
 
+    /// <summary>
+    /// Creates a new user.
+    /// </summary>
     [HttpPost]
     [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
     public async Task<IActionResult> Post([FromBody] UserDTO user)
@@ -57,15 +69,21 @@ public class UserController : ControllerBase
         return Ok(_mapper.Map<UserDTO>(userCreated));
     }
 
+    /// <summary>
+    /// Updates a user.
+    /// </summary>
     [HttpPut]
-    [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor,Colaborador")]
     public async Task<IActionResult> Put([FromBody] UserDTO user)
     {
+        var userDTO = (UserDTO)HttpContext.Items["CurrentUserDTO"]!;
         var identityUser = _mapper.Map<IdentityUser>(user);
-        var userUpdated = await _userService.Update(identityUser);
+        var userUpdated = await _userService.Update(identityUser, userDTO.Id!);
         return Ok(_mapper.Map<UserDTO>(userUpdated));
     }
 
+    /// <summary>
+    /// Updates the password of the current user.
+    /// </summary>
     [HttpPut("password")]
     public async Task<IActionResult> Put([FromBody] UpdatePasswordIM model)
     {
@@ -74,6 +92,9 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
+    /// <summary>
+    /// Deletes a user by ID.
+    /// </summary>
     [HttpDelete("{id}")]
     [Authorize(Roles = "Desenvolvedor,Administrador")]
     public async Task<IActionResult> Delete(string id)
@@ -82,11 +103,17 @@ public class UserController : ControllerBase
         return Ok(_mapper.Map<UserDTO>(identityUser));
     }
 
+    /// <summary>
+    /// Adds a user to a role.
+    /// </summary>
     [HttpPost("add-to-role")]
     [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
     public async Task<IActionResult> AddToRole([FromBody] UserRoleIM model) =>
         Ok(await _userRoleService.AddToRole(model.UserId, model.RoleName));
 
+    /// <summary>
+    /// Removes a user from a role.
+    /// </summary>
     [HttpDelete("remove-from-role")]
     [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
     public async Task<IActionResult> RemoveFromRole([FromBody] UserRoleIM model) =>

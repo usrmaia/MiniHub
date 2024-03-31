@@ -62,12 +62,15 @@ public class UserService : IUserService
         return newUser;
     }
 
-    public async Task<IdentityUser> Update(IdentityUser newUser)
+    public async Task<IdentityUser> Update(IdentityUser newUser, string userId)
     {
         if (!await _userRepository.ExistsById(newUser.Id))
             throw new AppException("Usuário não encontrado", HttpStatusCode.NotFound);
 
         var oldUser = await _userRepository.GetById(newUser.Id);
+
+        if (oldUser.Id != userId)
+            throw new AppException("Você não tem permissão para alterar este usuário", HttpStatusCode.Forbidden);
 
         if (oldUser.UserName != newUser.UserName && await _userRepository.ExistsByUserName(newUser.UserName!)) throw new AppException("Nome de usuário já existe!", HttpStatusCode.Conflict);
         if (oldUser.Email != newUser.Email && await _userRepository.ExistsByEmail(newUser.Email!)) throw new AppException("Email já existe!", HttpStatusCode.Conflict);

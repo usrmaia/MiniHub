@@ -151,10 +151,10 @@ builder.Services.AddSwaggerGen(setup =>
 {
     setup.SwaggerDoc("v1", new()
     {
-        Title = "MiniHub.API - Um Hub de conteúdo para o sua empresa ou projeto",
+        Title = "MiniHub.API - Um Hub de arquivos para o sua empresa ou projeto",
         Version = "v1",
         // Dê uma descrição longa e detalhada
-        Description = "O MiniHub.API é um sistema de gerenciamento de conteúdo para empresas e projetos. Com ele, é possível criar, editar, compartilhar e excluir conteúdos, além de gerenciar usuários e permissões. Tudo isso na rede interna da sua empresa ou projeto.",
+        Description = "O MiniHub.API é um sistema de gerenciamento de arquivos para empresas e projetos. Com ele, é possível criar, editar, compartilhar e excluir arquivos, além de gerenciar usuários e permissões. Tudo isso na rede interna da sua empresa ou projeto.",
         Contact = new OpenApiContact
         {
             Name = "George Maia",

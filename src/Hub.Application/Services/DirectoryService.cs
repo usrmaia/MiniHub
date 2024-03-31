@@ -61,13 +61,13 @@ public class DirectoryService : IDirectoryService
         if (oldDirectory.UserId != newDirectory.UserId)
             throw new AppException("Usuário não possui permissão para editar este diretório", HttpStatusCode.Forbidden);
 
-        if (oldDirectory.ParentId != newDirectory.ParentId && !await _directoryRepository.ExistsById(newDirectory.ParentId))
-            throw new AppException("Diretório pai não encontrado", HttpStatusCode.NotFound);
+        if (oldDirectory.ParentId != newDirectory.ParentId)
+            throw new AppException("Não é possível alterar o diretório pai", HttpStatusCode.BadRequest);
 
         if (oldDirectory.Name != newDirectory.Name)
             throw new AppException("Não é possível alterar o nome do diretório", HttpStatusCode.BadRequest);
 
-        oldDirectory.ParentId = newDirectory.ParentId;
+        // Update description
 
         return await _directoryRepository.Update(oldDirectory);
     }

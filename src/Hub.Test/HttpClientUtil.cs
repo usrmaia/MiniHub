@@ -11,7 +11,7 @@ namespace Hub.Test.Utils;
 
 public class HttpClientUtil
 {
-    public string _acessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6ImF0K2p3dCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJkZXYiLCJyb2xlIjoiRGVzZW52b2x2ZWRvciIsIm5iZiI6MTcxMTgxNDA3MywiZXhwIjoxNzExODIxMjczLCJpYXQiOjE3MTE4MTQwNzMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE1NSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE1NSJ9.7ABt3NVrMRYWtO5laqSORmYQQb3m5aZ3UEc7bq5s5Bk";
+    public string _acessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6ImF0K2p3dCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJkZXYiLCJyb2xlIjoiRGVzZW52b2x2ZWRvciIsIm5iZiI6MTcxMTgyMjMwMywiZXhwIjoxNzExODI5NTAzLCJpYXQiOjE3MTE4MjIzMDMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE1NSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE1NSJ9.vI0tjRNiBwvVcoFbXALihC93otl-bCsK47KUfCP0TsQ";
     public string _refreshToken = string.Empty;
 
     /// <summary>

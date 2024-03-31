@@ -27,6 +27,9 @@ public class StorageController : ControllerBase
         _fileRoleService = fileRoleService;
     }
 
+    /// <summary>
+    /// Uploads a file to the storage.
+    /// </summary>
     [HttpPost("upload")]
     public async Task<IActionResult> Upload([FromForm] PostFileIM model)
     {
@@ -35,6 +38,9 @@ public class StorageController : ControllerBase
         return Ok(await _storageService.Upload(model.FormFile, model.FileE!));
     }
 
+    /// <summary>
+    /// Downloads a file from the storage.
+    /// </summary>
     [HttpGet("download/{fileId}")]
     public async Task<IActionResult> Download(string fileId)
     {
@@ -44,6 +50,9 @@ public class StorageController : ControllerBase
         return PhysicalFile(path, "application/octet-stream", file.Name);
     }
 
+    /// <summary>
+    /// Moves a file to a different location in the storage.
+    /// </summary>
     [Authorize]
     [HttpPost("move")]
     public async Task<IActionResult> Move([FromBody] MoveDTO moveDTO)
@@ -52,6 +61,9 @@ public class StorageController : ControllerBase
         return Ok(await _storageService.Move(moveDTO, user));
     }
 
+    /// <summary>
+    /// Deletes a file from the storage.
+    /// </summary>
     [Authorize]
     [HttpDelete("{fileId}")]
     public async Task<IActionResult> Delete(string fileId)
@@ -60,6 +72,9 @@ public class StorageController : ControllerBase
         return Ok(await _storageService.Delete(fileId, user));
     }
 
+    /// <summary>
+    /// Adds a flag to a file.
+    /// </summary>
     [Authorize]
     [HttpPost("add-flag")]
     public async Task<IActionResult> AddFlag([FromBody] FileFlag fileFlag)
@@ -68,6 +83,9 @@ public class StorageController : ControllerBase
         return Ok(await _fileFlagService.AddFlag(fileFlag.FileId, fileFlag.FlagId, user));
     }
 
+    /// <summary>
+    /// Removes a flag from a file.
+    /// </summary>
     [Authorize]
     [HttpDelete("remove-flag")]
     public async Task<IActionResult> RemoveFlag([FromBody] FileFlag fileFlag)
@@ -76,6 +94,9 @@ public class StorageController : ControllerBase
         return Ok(await _fileFlagService.RemoveFlag(fileFlag.FileId, fileFlag.FlagId, user));
     }
 
+    /// <summary>
+    /// Adds a role to a file.
+    /// </summary>
     [Authorize]
     [HttpPost("add-role")]
     public async Task<IActionResult> AddRole([FromBody] FileRole fileRole)
@@ -84,6 +105,9 @@ public class StorageController : ControllerBase
         return Ok(await _fileRoleService.AddRole(fileRole.FileId, fileRole.RoleId, user));
     }
 
+    /// <summary>
+    /// Removes a role from a file.
+    /// </summary>
     [Authorize]
     [HttpDelete("remove-role")]
     public async Task<IActionResult> RemoveRole([FromBody] FileRole fileRole)
