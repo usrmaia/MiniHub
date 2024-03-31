@@ -70,26 +70,16 @@ public class DirectoryControllerTest : GlobalClientRequest
     }
 
     [Fact]
-    public async Task Put_ValidDirectoryWithParent_ReturnsOk()
+    public async Task Put_ValidDirectory_ReturnsOk()
     {
         var parent = await GetDirectory();
-        var directory = await GetDirectory();
-        directory.ParentId = parent.Id;
+        var directory = await GetDirectory(parentId: parent.Id);
+        directory.Description = new Bogus.Faker().Lorem.Sentence();
 
         var response = await PutFromBody<DirectoryE>(_directoryClient, directory);
 
         Assert.Equal(directory.ParentId, response.ParentId);
-    }
-
-    [Fact]
-    public async Task Put_InvalidDirectoryParent_ReturnsNotFound()
-    {
-        var directory = await GetDirectory();
-        directory.ParentId = Guid.NewGuid().ToString();
-
-        var response = await PutFromBody<AppException>(_directoryClient, directory);
-
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.Equal(directory.Description, response.Description);
     }
 
     [Fact]

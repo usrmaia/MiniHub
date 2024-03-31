@@ -72,9 +72,14 @@ public class UserService : IUserService
         if (oldUser.Id != userId)
             throw new AppException("Você não tem permissão para alterar este usuário", HttpStatusCode.Forbidden);
 
-        if (oldUser.UserName != newUser.UserName && await _userRepository.ExistsByUserName(newUser.UserName!)) throw new AppException("Nome de usuário já existe!", HttpStatusCode.Conflict);
-        if (oldUser.Email != newUser.Email && await _userRepository.ExistsByEmail(newUser.Email!)) throw new AppException("Email já existe!", HttpStatusCode.Conflict);
-        if (oldUser.PhoneNumber != newUser.PhoneNumber && await _userRepository.ExistsByPhoneNumber(newUser.PhoneNumber!)) throw new AppException("Telefone já existe!", HttpStatusCode.Conflict);
+        if (oldUser.UserName != newUser.UserName && await _userRepository.ExistsByUserName(newUser.UserName!))
+            throw new AppException("Nome de usuário já existe!", HttpStatusCode.Conflict);
+
+        if (oldUser.Email != newUser.Email && await _userRepository.ExistsByEmail(newUser.Email!))
+            throw new AppException("Email já existe!", HttpStatusCode.Conflict);
+
+        if (oldUser.PhoneNumber != newUser.PhoneNumber && await _userRepository.ExistsByPhoneNumber(newUser.PhoneNumber!))
+            throw new AppException("Telefone já existe!", HttpStatusCode.Conflict);
 
         oldUser.UserName = newUser.UserName;
         oldUser.Email = newUser.Email;

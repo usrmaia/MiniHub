@@ -6,6 +6,7 @@ public class DirectoryE
 {
     public string? Id { get; set; }
     public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
     public string? ParentId { get; set; }
     public DirectoryE? Parent { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;

@@ -14,7 +14,7 @@ public class FileConfiguration : IEntityTypeConfiguration<FileE>
             .ValueGeneratedOnAdd();
 
         builder.Property(f => f.Name).IsRequired();
-        builder.Property(f => f.Description).IsRequired(false);
+        builder.Property(f => f.Description).IsRequired();
         builder.Property(f => f.Length).IsRequired().HasColumnType("decimal(18,2)");
         builder.Property(f => f.Path).IsRequired();
         builder.Property(f => f.Type).IsRequired();

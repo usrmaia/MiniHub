@@ -67,7 +67,7 @@ public class DirectoryService : IDirectoryService
         if (oldDirectory.Name != newDirectory.Name)
             throw new AppException("Não é possível alterar o nome do diretório", HttpStatusCode.BadRequest);
 
-        // Update description
+        oldDirectory.Description = newDirectory.Description;
 
         return await _directoryRepository.Update(oldDirectory);
     }

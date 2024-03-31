@@ -14,6 +14,7 @@ public class DirectoryConfiguration : IEntityTypeConfiguration<DirectoryE>
             .ValueGeneratedOnAdd();
 
         builder.Property(d => d.Name).IsRequired();
+        builder.Property(d => d.Description).IsRequired();
 
         builder.Property(d => d.ParentId)
             .IsRequired(false)

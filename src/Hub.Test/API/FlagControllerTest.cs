@@ -76,6 +76,7 @@ public class FlagControllerTest : GlobalClientRequest
         var result = await PutFromBody<Flag>(_flagClient, updatedFlag);
 
         Assert.Equal(updatedFlag.Name, result.Name);
+        Assert.Equal(updatedFlag.Description, result.Description);
     }
 
     [Fact]

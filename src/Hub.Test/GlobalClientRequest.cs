@@ -82,22 +82,22 @@ public class GlobalClientRequest : HttpClientUtil
         return model;
     }
 
-    public async Task<Flag> GetFlag(string? id = null, string? name = null, DateTime? createdAt = null, DateTime? updatedAt = null, string? userId = null)
+    public async Task<Flag> GetFlag(string? id = null, string? name = null, string? description = null, DateTime? createdAt = null, DateTime? updatedAt = null, string? userId = null)
     {
         if (!id.IsNullOrEmpty())
             return await GetFromUri<Flag>(_flagClient, id!);
 
-        var flagFake = new FlagFake(id: id, name: name, createdAt: createdAt, updatedAt: updatedAt).Generate();
+        var flagFake = new FlagFake(id: id, name: name, description: description, createdAt: createdAt, updatedAt: updatedAt).Generate();
         return await PostFromBody<Flag>(_flagClient, flagFake);
     }
 
-    public async Task<DirectoryE> GetDirectory(string? id = null, string? parentId = null, string? name = null, DateTime? createdAt = null, DateTime? updatedAt = null, List<FileE>? files = null, List<Flag>? flags = null, List<IdentityRole>? roles = null, string? userId = null)
+    public async Task<DirectoryE> GetDirectory(string? id = null, string? parentId = null, string? name = null, string? description = null, DateTime? createdAt = null, DateTime? updatedAt = null, List<FileE>? files = null, List<Flag>? flags = null, List<IdentityRole>? roles = null, string? userId = null)
     {
         if (!id.IsNullOrEmpty())
             return await GetFromUri<DirectoryE>(_directoryClient, id!);
 
         var user = await GetUser(id: userId);
-        var directoryFake = new DirectoryFake(id: id, parentId: parentId, name: name, createdAt: createdAt, updatedAt: updatedAt, files: files, flags: flags, roles: roles, userId: user.Id).Generate();
+        var directoryFake = new DirectoryFake(id: id, parentId: parentId, name: name, description: description, createdAt: createdAt, updatedAt: updatedAt, files: files, flags: flags, roles: roles, userId: user.Id).Generate();
         return await PostFromBody<DirectoryE>(_directoryClient, directoryFake);
     }
 

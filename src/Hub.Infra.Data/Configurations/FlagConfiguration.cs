@@ -17,6 +17,9 @@ public class FlagConfiguration : IEntityTypeConfiguration<Flag>
             .IsRequired()
             .IsUnicode();
 
+        builder.Property(f => f.Description)
+            .IsRequired();
+
         builder.Property(f => f.CreatedAt)
             .IsRequired()
             .ValueGeneratedOnAdd()

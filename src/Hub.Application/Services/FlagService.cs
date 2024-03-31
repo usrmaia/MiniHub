@@ -63,6 +63,7 @@ public class FlagService : IFlagService
             throw new AppException("Usuário não pode ser alterado", HttpStatusCode.BadRequest);
 
         oldFlag.Name = newFlag.Name;
+        oldFlag.Description = newFlag.Description;
 
         return await _flagRepository.Update(oldFlag);
     }

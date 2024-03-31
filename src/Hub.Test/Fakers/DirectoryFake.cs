@@ -6,11 +6,12 @@ namespace Hub.Test.Fakers;
 
 public class DirectoryFake : Faker<DirectoryE>
 {
-    public DirectoryFake(string? id = null, string? parentId = null, string? name = null, DateTime? createdAt = null, DateTime? updatedAt = null, List<FileE>? files = null, List<Flag>? flags = null, List<IdentityRole>? roles = null, string? userId = null)
+    public DirectoryFake(string? id = null, string? parentId = null, string? name = null, string? description = null, DateTime? createdAt = null, DateTime? updatedAt = null, List<FileE>? files = null, List<Flag>? flags = null, List<IdentityRole>? roles = null, string? userId = null)
     {
         RuleFor(d => d.Id, f => id ?? null);
         RuleFor(d => d.ParentId, f => parentId ?? null);
         RuleFor(d => d.Name, f => name ?? f.Random.Word());
+        RuleFor(d => d.Description, f => description ?? f.Lorem.Sentence());
         RuleFor(d => d.CreatedAt, f => createdAt ?? f.Date.Past());
         RuleFor(d => d.UpdatedAt, f => updatedAt ?? f.Date.Past());
         RuleFor(d => d.Files, f => files ?? []);
