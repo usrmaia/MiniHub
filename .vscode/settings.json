@@ -5,6 +5,7 @@
         "Directory",
         "Storage",
         "Entities",
-        "User"
+        "User",
+        "UI"
     ]
 }
