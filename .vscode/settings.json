@@ -4,6 +4,7 @@
         "Flag",
         "Directory",
         "Storage",
-        "Entities"
+        "Entities",
+        "User"
     ]
 }
