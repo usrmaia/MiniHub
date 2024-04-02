@@ -6,6 +6,7 @@
         "Storage",
         "Entities",
         "User",
-        "UI"
+        "UI",
+        "Redux"
     ]
 }
