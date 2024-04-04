@@ -12,16 +12,22 @@ namespace Hub.API.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _service;
+    private readonly IUserService _userService;
 
-    public AuthController(IAuthService service) =>
-        _service = service;
+    public AuthController(IAuthService service, IUserService userService) =>
+        (_service, _userService) = (service, userService);
 
     /// <summary>
     /// Authenticates a user and returns an auth token.
     /// </summary>
     [HttpPost("login")]
-    public async Task<ActionResult<AuthToken>> Login([FromBody] LoginIM login) =>
-        await _service.Login(login.UserName, login.Password);
+    public async Task<ActionResult<UserToken>> Login([FromBody] LoginIM login)
+    {
+        var token = await _service.Login(login.UserName, login.Password);
+        var user = await _userService.GetByUserName(login.UserName);
+
+        return new UserToken(token, user);
+    }
 
     /// <summary>
     /// Refreshes an auth token.

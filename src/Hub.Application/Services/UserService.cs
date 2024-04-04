@@ -34,8 +34,12 @@ public class UserService : IUserService
     public async Task<IdentityUser> GetById(string id) =>
         await _userRepository.GetById(id);
 
-    public async Task<IdentityUser> GetByUserName(string userName) =>
-        await _userRepository.GetByUserName(userName);
+    public async Task<UserDTO> GetByUserName(string userName)
+    {
+        var user = await _userRepository.GetByUserName(userName);
+        var roles = await _userRoleRepository.GetRolesByUserId(user.Id);
+        return new UserDTO(user, roles);
+    }
 
     public async Task<IdentityUser> Create(IdentityUser user, string password)
     {

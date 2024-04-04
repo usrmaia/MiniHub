@@ -33,6 +33,12 @@ public class UserRoleRepository : BaseRepository<IdentityUserRole<string>>, IUse
         return await _userManager.IsInRoleAsync(user, roleName);
     }
 
+    public async Task<List<string>> GetRolesByUserId(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId) ?? throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
+        return (List<string>)await _userManager.GetRolesAsync(user);
+    }
+
     public async Task<bool> Remove(IdentityUser user, string roleName)
     {
         var result = await _userManager.RemoveFromRoleAsync(user, roleName);
