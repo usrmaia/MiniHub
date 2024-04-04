@@ -1,6 +1,12 @@
+'use client'
+
 import { Avatar, Box, Button, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import { Logout } from '@mui/icons-material';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { useDispatch } from 'react-redux';
+import { logoutUser } from '@_redux/features/auth/slice';
 
 export interface ISideBarProps {
   text: string;
@@ -8,7 +14,15 @@ export interface ISideBarProps {
   icon: React.ReactNode;
 }
 
+const logoutButton: ISideBarProps = { text: 'Logout', to: '/signin', icon: <Logout /> };
+
 export const SideBar = ({ buttonList, drawerWidth = 240 }: Readonly<{ buttonList: ISideBarProps[][], drawerWidth: number | undefined }>) => {
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
+
   const Logo = () => (
     <Box display="flex" flexDirection='row' justifyContent='left' alignItems='center' gap={1} height={64} p={2}>
       <Avatar src="/logo.png" variant="square" sx={{ width: 32, height: 32 }} />
@@ -18,21 +32,29 @@ export const SideBar = ({ buttonList, drawerWidth = 240 }: Readonly<{ buttonList
 
   const ButtonList = () => (
     <List>
-      {buttonList.map(subList => (
-        <>
-          {subList.map(({ text, to, icon }) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <Link href={to} style={{ color: 'inherit', textDecoration: 'none' }}>
-                <ListItemButton>
-                  <ListItemIcon sx={{ color: 'inherit' }}>{icon}</ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: 1 }} />
-                </ListItemButton>
-              </Link>
-            </ListItem>
-          ))}
-          <Divider />
-        </>
-      ))}
+      <>
+        {buttonList.map((subList, index) =>
+          <>
+            {subList.map(({ text, to, icon }) => (
+              <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                <Link href={to} style={{ color: 'inherit', textDecoration: 'none' }}>
+                  <ListItemButton>
+                    <ListItemIcon sx={{ color: 'inherit' }}>{icon}</ListItemIcon>
+                    <ListItemText primary={text} sx={{ opacity: 1 }} />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+            ))}
+            <Divider key={index} />
+          </>
+        )}
+        <ListItem key={logoutButton.text} disablePadding sx={{ display: 'block' }}>
+          <ListItemButton onClick={handleLogout}>
+            <ListItemIcon sx={{ color: 'inherit' }}>{logoutButton.icon}</ListItemIcon>
+            <ListItemText primary={logoutButton.text} sx={{ opacity: 1 }} />
+          </ListItemButton>
+        </ListItem>
+      </>
     </List>
   );
 

@@ -1,9 +1,9 @@
 export type flag = {
-  id: string;
+  id?: string;
   name: string;
-  description: string;
-  createdAt: Date;
-  updatedAt: Date;
-  userId: string;
-  user: user;
+  description?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  userId?: string;
+  user?: user;
 };

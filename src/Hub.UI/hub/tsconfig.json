@@ -25,6 +25,9 @@
       "@/*": [
         "./src/*"
       ],
+      "@_http/*": [
+        "./src/_http/axios/*"
+      ],
       "@_components/*": [
         "./src/_components/*"
       ],
@@ -36,6 +39,9 @@
       ],
       "@_theme/*": [
         "./src/_theme/*"
+      ],
+      "@_types/*": [
+        "./src/_types/*"
       ],
     }
   },

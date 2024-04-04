@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 
+import { getKey, getStorageValue } from '@/_services';
+
 /**
  * Custom hook for managing values in local storage.
  * 
@@ -10,14 +12,7 @@ import { useState, useEffect } from 'react';
  * @returns A tuple containing the current value and a function to update the value.
  */
 export const useLocalStorage = (key: string, initialValue?: unknown) => {
-  key = `@minihub:${key}`;
-
-  const getStorageValue = (key: string, initialValue?: unknown) => {
-    if (typeof window === 'undefined') return;
-
-    const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : initialValue || '';
-  };
+  key = getKey(key);
 
   const [value, setValue] = useState(getStorageValue(key, initialValue));
 

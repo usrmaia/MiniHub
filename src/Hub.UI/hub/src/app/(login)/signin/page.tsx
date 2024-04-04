@@ -2,6 +2,10 @@
 
 import { Box, Button, Checkbox, FormControlLabel, Link, TextField, Typography } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
+
+import { loginUser } from '@/_redux/features/auth/thunks';
 
 type Inputs = {
   username: string
@@ -9,13 +13,20 @@ type Inputs = {
 }
 
 export default function SingIn() {
+  const { push } = useRouter();
+
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => alert(data.username + ' ' + data.password)
+  const onSubmit: SubmitHandler<Inputs> = data => {
+    dispatch(loginUser({ username: data.username, password: data.password }));
+    push('/hub');
+  }
 
   const Links = () => (
     <Box display="flex" justifyContent="space-between">

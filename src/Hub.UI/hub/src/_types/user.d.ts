@@ -1,19 +1,19 @@
 export type user = {
-  id: string;
-  username: string;
+  id?: string;
+  userName: string;
   email: string;
-  phonenumber: string;
+  phoneNumber: string;
   password: string;
-  role: string[];
+  roles: string[];
 };
 
 export type updatedPassword = {
   oldPassword: string;
-  password: string;
+  newPassword: string;
 };
 
 export type role = {
-  id: string;
+  id?: string;
   name: string;
 };
 

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import Providers from "./providers";
+import ServerProviders from "./server-providers";
+import ClientProviders from "./client-providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,11 +14,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR">
-      <Providers>
-        <body className={inter.className}>
-          {children}
-        </body>
-      </Providers>
+      <ServerProviders>
+        <ClientProviders>
+          <body className={inter.className}>
+            {children}
+          </body>
+        </ClientProviders>
+      </ServerProviders>
     </html>
   );
 }

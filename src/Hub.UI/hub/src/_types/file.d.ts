@@ -1,31 +1,31 @@
 export type file = {
-  id: string;
-  name: string;
-  description: string;
-  length: number;
-  path: string;
-  createdAt: Date;
-  updatedAt: Date;
-  directoryId: string;
-  directory: directory;
+  id?: string;
+  name?: string;
+  description?: string;
+  length?: number;
+  path?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  directoryId?: string;
+  directory?: directory;
   flags: flag[];
   roles: role[];
-  userId: string;
-  user: user;
+  userId?: string;
+  user?: user;
 };
 
 export type fileFlag = {
   fileId: string;
-  file: file;
+  file?: file;
   flagId: string;
-  flag: flag;
+  flag?: flag;
 };
 
 export type fileRole = {
   fileId: string;
-  file: file;
+  file?: file;
   roleId: string;
-  role: role;
+  role?: role;
 };
 
 export type move = {
