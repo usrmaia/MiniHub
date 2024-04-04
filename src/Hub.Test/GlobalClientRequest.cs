@@ -39,11 +39,11 @@ public class GlobalClientRequest : HttpClientUtil
 
     #region GetEntityFake
 
-    public async Task<AuthToken> GetToken(string? userId = null, string? userName = null, string? password = null)
+    public async Task<UserToken> GetToken(string? userId = null, string? userName = null, string? password = null)
     {
         var user = await GetUser(id: userId, userName: userName, password: password);
         var login = new LoginIM { UserName = user.UserName, Password = user.Password };
-        return await PostFromBody<AuthToken>(_loginClient, login);
+        return await PostFromBody<UserToken>(_loginClient, login);
     }
 
     public async Task<UserDTO> GetUser(string? id = null, string? userName = null, string? email = null, string? phoneNumber = null, string? password = null, List<string>? roles = null)

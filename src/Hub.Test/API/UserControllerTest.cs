@@ -44,7 +44,7 @@ public class UserControllerTests : GlobalClientRequest
     {
         var user = await GetUser();
         var token = await GetToken(userId: user.Id, userName: user.UserName, password: user.Password);
-        _acessToken = token.AccessToken;
+        _acessToken = token.AuthToken.AccessToken;
         var updatedUser = new UserFake(id: user.Id).Generate();
 
         var result = await PutFromBody<UserDTO>(_userClient, updatedUser);
@@ -71,7 +71,7 @@ public class UserControllerTests : GlobalClientRequest
         var user1 = await GetUser();
         var user2 = await GetUser();
         var token = await GetToken(userId: user1.Id, userName: user1.UserName, password: user1.Password);
-        _acessToken = token.AccessToken;
+        _acessToken = token.AuthToken.AccessToken;
         var userWithExistingUserName = new UserFake(id: user1.Id, userName: user2.UserName).Generate();
         var userWithExistingEmail = new UserFake(id: user1.Id, email: user2.Email).Generate();
         var userWithExistingPhoneNumber = new UserFake(id: user1.Id, phoneNumber: user2.PhoneNumber).Generate();
@@ -90,7 +90,7 @@ public class UserControllerTests : GlobalClientRequest
     {
         var user = await GetUser();
         var token = await GetToken(userId: user.Id, userName: user.UserName, password: user.Password);
-        _acessToken = token.AccessToken;
+        _acessToken = token.AuthToken.AccessToken;
         var model = new UpdatePasswordIM { OldPassword = user.Password, Password = new UserFake().Generate().Password };
 
         var result = await PutFromBody<UserDTO>(_userPasswordClient, model);

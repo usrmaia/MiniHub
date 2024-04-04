@@ -13,10 +13,10 @@ public class AuthControllerTest : GlobalClientRequest
     {
         var login = new LoginIM { UserName = "dev", Password = "!23L6(bNi.22T71,%4vfR{<~tA.]" };
 
-        var response = await PostFromBody<AuthToken>(_loginClient, login);
+        var response = await PostFromBody<UserToken>(_loginClient, login);
 
-        Assert.NotNull(response.AccessToken);
-        Assert.NotNull(response.RefreshToken);
+        Assert.NotNull(response.AuthToken.AccessToken);
+        Assert.NotNull(response.AuthToken.RefreshToken);
     }
 
     [Fact]
@@ -24,10 +24,10 @@ public class AuthControllerTest : GlobalClientRequest
     {
         var login = new LoginIM { UserName = "admin", Password = "!23L6(bNi.22T71,%4vfR{<~tA.]" };
 
-        var response = await PostFromBody<AuthToken>(_loginClient, login);
+        var response = await PostFromBody<UserToken>(_loginClient, login);
 
-        Assert.NotNull(response.AccessToken);
-        Assert.NotNull(response.RefreshToken);
+        Assert.NotNull(response.AuthToken.AccessToken);
+        Assert.NotNull(response.AuthToken.RefreshToken);
     }
 
     [Fact]
@@ -35,10 +35,10 @@ public class AuthControllerTest : GlobalClientRequest
     {
         var login = new LoginIM { UserName = "super", Password = "!23L6(bNi.22T71,%4vfR{<~tA.]" };
 
-        var response = await PostFromBody<AuthToken>(_loginClient, login);
+        var response = await PostFromBody<UserToken>(_loginClient, login);
 
-        Assert.NotNull(response.AccessToken);
-        Assert.NotNull(response.RefreshToken);
+        Assert.NotNull(response.AuthToken.AccessToken);
+        Assert.NotNull(response.AuthToken.RefreshToken);
     }
 
     [Fact]
@@ -47,10 +47,11 @@ public class AuthControllerTest : GlobalClientRequest
         var user = await GetUser();
         var login = new LoginIM { UserName = user.UserName, Password = user.Password };
 
-        var response = await PostFromBody<AuthToken>(_loginClient, login);
+        var response = await PostFromBody<UserToken>(_loginClient, login);
 
-        Assert.NotNull(response.AccessToken);
-        Assert.NotNull(response.RefreshToken);
+        Assert.NotNull(response.AuthToken.AccessToken);
+        Assert.NotNull(response.AuthToken.RefreshToken);
+        Assert.Equal(user.UserName, response.User.UserName);
     }
 
     [Fact]
@@ -79,7 +80,7 @@ public class AuthControllerTest : GlobalClientRequest
     public async Task Get_RefreshToken_ValidToken_ReturnsToken()
     {
         var token = await GetToken();
-        _acessToken = token.RefreshToken;
+        _acessToken = token.AuthToken.RefreshToken;
 
         var response = await Get<AuthToken>(_refreshTokenClient);
 
@@ -101,7 +102,7 @@ public class AuthControllerTest : GlobalClientRequest
     public async Task Get_User_ValidToken_ReturnsUser()
     {
         var token = await GetToken();
-        _acessToken = token.AccessToken;
+        _acessToken = token.AuthToken.AccessToken;
 
         var response = await Get<UserDTO>(_authUserClient);
 
