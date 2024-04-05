@@ -6,14 +6,14 @@ import env from '@/env';
 import { getAuthToken } from '@/_services';
 
 const AxiosCreate = () => {
-  const accessToken = getAuthToken().accessToken;
+  const token = getAuthToken();
 
   return axios.create({
     baseURL: env.API_URL,
     timeout: 5000,
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`,
+      'Authorization': `Bearer ${token ? token.accessToken : ''}`,
     },
   });
 };
@@ -32,12 +32,12 @@ Axios.interceptors.response.use(
   },
   error => {
     if (error.response) {
-      console.error('API/UI Response Error:', error.response.data);
-      console.error('API/UI Status:', error.response.status);
+      console.debug('API/UI Response Error:', error.response.data);
+      console.debug('API/UI Status:', error.response.status);
     } else if (error.request) {
-      console.error('API/UI Request Error:', error.request);
+      console.debug('API/UI Request Error:', error.request);
     } else {
-      console.error('API/UI Error:', error.message);
+      console.debug('API/UI Error:', error.message);
     }
     return Promise.reject(error);
   }

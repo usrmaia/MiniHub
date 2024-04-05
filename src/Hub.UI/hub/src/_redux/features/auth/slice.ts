@@ -13,7 +13,7 @@ interface initialStateProps {
 
 const initialState: initialStateProps = {
   authToken: getAuthToken() || null,
-  user: getUser(),
+  user: getUser() || null,
   status: 'idle',
   error: null,
 };

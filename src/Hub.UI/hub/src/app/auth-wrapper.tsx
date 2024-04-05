@@ -15,14 +15,12 @@ export const AuthWrapper = ({ children }: Readonly<{ children: React.ReactNode }
   const status = useSelector(selectStatus);
 
   useEffect(() => {
+    // TODO: check if token is expired and token-userName mismatch
     if (token?.accessToken && user?.userName)
-      push('/hub');
-    else if (!token?.accessToken && !user?.userName)
-      push('/signin');
-    // else if (!token?.accessToken && !user?.userName) {
-    //   dispatch(logoutUser());
-    //   push('/signin');
-    // }
+      return;
+
+    push('/signin');
+    dispatch(logoutUser());
   }, [token, user]);
 
   return status === 'loading' ? <Loading /> : children;
