@@ -25,8 +25,8 @@ public class RoleController : ControllerBase
     /// </summary>
     [HttpGet]
     [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
-    public async Task<IActionResult> Get() =>
-        Ok(await _roleService.Get());
+    public async Task<IActionResult> GetAll() =>
+        Ok(await _roleService.Query());
 
     /// <summary>
     /// Creates a new role.

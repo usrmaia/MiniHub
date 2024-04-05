@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Hub.Domain.DTOs;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hub.Domain.Repositories;
 
 public interface IRoleRepository : IBaseRepository<IdentityRole>
 {
-    // Task<List<IdentityRole>> Query(RoleFilter filter);
+    Task<List<RoleDTO>> Query();
     bool IsDefault(string name);
     Task<bool> ExistsById(string id);
     Task<bool> ExistsByName(string name);

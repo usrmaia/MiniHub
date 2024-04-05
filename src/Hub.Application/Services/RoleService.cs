@@ -14,10 +14,8 @@ public class RoleService : IRoleService
     public RoleService(IRoleRepository roleRepository) =>
         _roleRepository = roleRepository;
 
-    public Task<List<RoleDTO>> Get()
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<List<RoleDTO>> Query() =>
+        await _roleRepository.Query();
 
     public Task<RoleDTO> GetById(int id)
     {

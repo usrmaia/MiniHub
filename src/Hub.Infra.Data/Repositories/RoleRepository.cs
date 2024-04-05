@@ -1,4 +1,5 @@
-﻿using Hub.Domain.Exceptions;
+﻿using Hub.Domain.DTOs;
+using Hub.Domain.Exceptions;
 using Hub.Domain.Repositories;
 using Hub.Infra.Data.Context;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +14,21 @@ public class RoleRepository : BaseRepository<IdentityRole>, IRoleRepository
 
     public RoleRepository(AppDbContext context, RoleManager<IdentityRole> roleManager) : base(context) =>
         _roleManager = roleManager;
+
+    public async Task<List<RoleDTO>> Query()
+    {
+        var query = _roleManager.Roles.AsQueryable();
+
+        var roles = await query
+            .Select(r => new RoleDTO
+            {
+                Id = r.Id,
+                Name = r.Name ?? string.Empty
+            })
+            .ToListAsync();
+
+        return roles;
+    }
 
     public bool IsDefault(string name) =>
         name == "Desenvolvedor" ||
