@@ -1,19 +1,16 @@
 'use client'
 
-import { useContext, useEffect } from 'react';
 import { AppBar, Container, Grid, IconButton, Toolbar } from '@mui/material';
 import { NotificationAdd } from '@mui/icons-material';
 import Image from 'next/image';
-import { useSelector } from 'react-redux';
+import { useContext } from 'react';
 
 import { Avatar } from './avatar';
-import { ToggleThemeIcon } from './toggleThemeIcon';
 import { Search } from './search';
-import { selectUser } from '@/_redux/features/auth/slice';
 import { colors, ThemeContext } from '@/_theme';
+import { ToggleThemeIcon } from './toggleThemeIcon';
 
 export const AppAppBar = () => {
-  let user = useSelector(selectUser);
   const { themeName } = useContext(ThemeContext);
 
   return (

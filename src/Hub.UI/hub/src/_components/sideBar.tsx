@@ -4,6 +4,7 @@ import { Avatar, Box, Button, Divider, Drawer, List, ListItem, ListItemButton, L
 import { Logout } from '@mui/icons-material';
 import Image from 'next/image';
 import Link from 'next/link';
+import React from 'react';
 
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '@_redux/features/auth/slice';
@@ -34,9 +35,9 @@ export const SideBar = ({ buttonList, drawerWidth = 240 }: Readonly<{ buttonList
     <List>
       <>
         {buttonList.map((subList, index) =>
-          <>
-            {subList.map(({ text, to, icon }) => (
-              <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+          <React.Fragment key={index}>
+            {subList.map(({ text, to, icon }, index) => (
+              <ListItem key={text + index} disablePadding sx={{ display: 'block' }}>
                 <Link href={to} style={{ color: 'inherit', textDecoration: 'none' }}>
                   <ListItemButton>
                     <ListItemIcon sx={{ color: 'inherit' }}>{icon}</ListItemIcon>
@@ -45,8 +46,8 @@ export const SideBar = ({ buttonList, drawerWidth = 240 }: Readonly<{ buttonList
                 </Link>
               </ListItem>
             ))}
-            <Divider key={index} />
-          </>
+            <Divider key={'Divider' + index} />
+          </React.Fragment>
         )}
         <ListItem key={logoutButton.text} disablePadding sx={{ display: 'block' }}>
           <ListItemButton onClick={handleLogout}>

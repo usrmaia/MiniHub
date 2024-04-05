@@ -1,7 +1,6 @@
 'use client'
 
 import { Box, Typography } from '@mui/material'
-import { useEffect } from 'react'
 
 export default function Error({ error }: { error: Error & { digest?: string } }) {
   console.error(error);
