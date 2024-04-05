@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Hub.src.Hub.Infra.Data.Migrations
+namespace Hub.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration
@@ -341,10 +341,10 @@ namespace Hub.src.Hub.Infra.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1", "73e158bd-5788-4b0c-b7c7-4a79c7f41ccf", "Desenvolvedor", "DESENVOLVEDOR" },
-                    { "2", "e5bd54e0-2f07-48e6-92f0-1e3d5c3ee378", "Administrador", "ADMINISTRADOR" },
-                    { "3", "e62aacb5-dd3c-4e26-bc09-d1f0a8e2dfce", "Supervisor", "SUPERVISOR" },
-                    { "4", "68ad67b1-7a28-41af-8557-0cdddc854418", "Colaborador", "COLABORADOR" }
+                    { "1", "881d389a-a4da-4fb1-b90f-18a0713000aa", "Desenvolvedor", "DESENVOLVEDOR" },
+                    { "2", "9bae75c5-eb20-4212-adb0-d1589570746a", "Administrador", "ADMINISTRADOR" },
+                    { "3", "f0868ed8-84ec-4daa-9a40-92c690ea38e6", "Supervisor", "SUPERVISOR" },
+                    { "4", "9844e4cb-cb3d-4a29-83ef-f5c011a37894", "Colaborador", "COLABORADOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -352,9 +352,9 @@ namespace Hub.src.Hub.Infra.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "6a0c7008-a0cf-4e29-baf3-ab19a3174575", "dev@gmail.com", false, false, null, "DEV@GMAIL.COM", "DEV", "AQAAAAIAAYagAAAAECeJSXQ6U9mLuV2YlG0hpAw1n5S++Ip6AO7M6QYw/4VPcZDRfh/WyNgo6M+SufaeuQ==", "(55) 85 9 9999-9999", false, "e00bf2ff-d50e-420a-81b3-56788e82c16b", false, "dev" },
-                    { "2", 0, "1864fb8c-52e8-4868-9846-16b800a1c3f2", "admin@gmail.com", false, false, null, "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAEMn/A/2uzWNXNSHhc/iMb496cZjsJQdwWUuyj56FxbhcgWkHgWkEyh9rQMNUFayXKw==", "(55) 85 9 9999-9999", false, "b348a17c-3f5e-483c-b9c8-71017185892b", false, "admin" },
-                    { "3", 0, "d24bee47-615a-4acb-84c9-b4f76eed4f40", "super@gmail.com", false, false, null, "SUPER@GMAIL.COM", "SUPER", "AQAAAAIAAYagAAAAELYBO80nUkdCvbz9bbm4Zt4sOUmn314TZUIszue33kCj1NbRg8ZEzE8k9clrZhxk2Q==", "(55) 85 9 9999-9999", false, "db4e4804-6bc0-4e76-8cc6-ae941bae9e1a", false, "super" }
+                    { "1", 0, "6c4e9dee-478c-48f7-b0f9-c360ffdaafbf", "dev@gmail.com", false, false, null, "DEV@GMAIL.COM", "DEV", "AQAAAAIAAYagAAAAEEdlSLib0i+q2KVRr7B3zSg87lJEnB7+jleTjBE/oLUGf09yppj9x/zd8Nl4fTk23Q==", "(55) 85 9 9999-9999", false, "dd4ac599-4161-45f5-b548-945590f3db31", false, "dev" },
+                    { "2", 0, "0ca01cbb-ae95-41aa-8033-9ad26e7432fe", "admin@gmail.com", false, false, null, "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAEMdNb7gNrjInlEDK7uFxfNO8Cqx0NdNKDK3CDlzVd1r8SULbUxk2tYxSG8wQIk+v/Q==", "(55) 85 9 9999-9998", false, "5272a0b8-4eb7-402d-a2fb-a015e48a26dd", false, "admin" },
+                    { "3", 0, "56d3a05f-5068-4f51-ab8d-e848e6f5474d", "super@gmail.com", false, false, null, "SUPER@GMAIL.COM", "SUPER", "AQAAAAIAAYagAAAAEP2nbp0mb6WnydhCaJxZiUUfoND1vvAkCsMOycxMtzA0q3IkIARkS6nHyFP0Ox1miQ==", "(55) 85 9 9999-9997", false, "4a0b4ac2-d91f-49da-9cde-4fa5fe371b2f", false, "super" }
                 });
 
             migrationBuilder.InsertData(

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Hub.src.Hub.Infra.Data.Migrations
+namespace Hub.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -234,28 +234,28 @@ namespace Hub.src.Hub.Infra.Data.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "73e158bd-5788-4b0c-b7c7-4a79c7f41ccf",
+                            ConcurrencyStamp = "881d389a-a4da-4fb1-b90f-18a0713000aa",
                             Name = "Desenvolvedor",
                             NormalizedName = "DESENVOLVEDOR"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "e5bd54e0-2f07-48e6-92f0-1e3d5c3ee378",
+                            ConcurrencyStamp = "9bae75c5-eb20-4212-adb0-d1589570746a",
                             Name = "Administrador",
                             NormalizedName = "ADMINISTRADOR"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "e62aacb5-dd3c-4e26-bc09-d1f0a8e2dfce",
+                            ConcurrencyStamp = "f0868ed8-84ec-4daa-9a40-92c690ea38e6",
                             Name = "Supervisor",
                             NormalizedName = "SUPERVISOR"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "68ad67b1-7a28-41af-8557-0cdddc854418",
+                            ConcurrencyStamp = "9844e4cb-cb3d-4a29-83ef-f5c011a37894",
                             Name = "Colaborador",
                             NormalizedName = "COLABORADOR"
                         });
@@ -353,16 +353,16 @@ namespace Hub.src.Hub.Infra.Data.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6a0c7008-a0cf-4e29-baf3-ab19a3174575",
+                            ConcurrencyStamp = "6c4e9dee-478c-48f7-b0f9-c360ffdaafbf",
                             Email = "dev@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "DEV@GMAIL.COM",
                             NormalizedUserName = "DEV",
-                            PasswordHash = "AQAAAAIAAYagAAAAECeJSXQ6U9mLuV2YlG0hpAw1n5S++Ip6AO7M6QYw/4VPcZDRfh/WyNgo6M+SufaeuQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEdlSLib0i+q2KVRr7B3zSg87lJEnB7+jleTjBE/oLUGf09yppj9x/zd8Nl4fTk23Q==",
                             PhoneNumber = "(55) 85 9 9999-9999",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e00bf2ff-d50e-420a-81b3-56788e82c16b",
+                            SecurityStamp = "dd4ac599-4161-45f5-b548-945590f3db31",
                             TwoFactorEnabled = false,
                             UserName = "dev"
                         },
@@ -370,16 +370,16 @@ namespace Hub.src.Hub.Infra.Data.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1864fb8c-52e8-4868-9846-16b800a1c3f2",
+                            ConcurrencyStamp = "0ca01cbb-ae95-41aa-8033-9ad26e7432fe",
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMn/A/2uzWNXNSHhc/iMb496cZjsJQdwWUuyj56FxbhcgWkHgWkEyh9rQMNUFayXKw==",
-                            PhoneNumber = "(55) 85 9 9999-9999",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMdNb7gNrjInlEDK7uFxfNO8Cqx0NdNKDK3CDlzVd1r8SULbUxk2tYxSG8wQIk+v/Q==",
+                            PhoneNumber = "(55) 85 9 9999-9998",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b348a17c-3f5e-483c-b9c8-71017185892b",
+                            SecurityStamp = "5272a0b8-4eb7-402d-a2fb-a015e48a26dd",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -387,16 +387,16 @@ namespace Hub.src.Hub.Infra.Data.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d24bee47-615a-4acb-84c9-b4f76eed4f40",
+                            ConcurrencyStamp = "56d3a05f-5068-4f51-ab8d-e848e6f5474d",
                             Email = "super@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "SUPER@GMAIL.COM",
                             NormalizedUserName = "SUPER",
-                            PasswordHash = "AQAAAAIAAYagAAAAELYBO80nUkdCvbz9bbm4Zt4sOUmn314TZUIszue33kCj1NbRg8ZEzE8k9clrZhxk2Q==",
-                            PhoneNumber = "(55) 85 9 9999-9999",
+                            PasswordHash = "AQAAAAIAAYagAAAAEP2nbp0mb6WnydhCaJxZiUUfoND1vvAkCsMOycxMtzA0q3IkIARkS6nHyFP0Ox1miQ==",
+                            PhoneNumber = "(55) 85 9 9999-9997",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "db4e4804-6bc0-4e76-8cc6-ae941bae9e1a",
+                            SecurityStamp = "4a0b4ac2-d91f-49da-9cde-4fa5fe371b2f",
                             TwoFactorEnabled = false,
                             UserName = "super"
                         });

@@ -31,7 +31,7 @@ public class UserConfiguration : IEntityTypeConfiguration<IdentityUser>
                 NormalizedUserName = "ADMIN",
                 Email = "admin@gmail.com",
                 NormalizedEmail = "ADMIN@GMAIL.COM",
-                PhoneNumber = "(55) 85 9 9999-9999",
+                PhoneNumber = "(55) 85 9 9999-9998",
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(new IdentityUser("admin"), "!23L6(bNi.22T71,%4vfR{<~tA.]"),
                 SecurityStamp = Guid.NewGuid().ToString(),
                 ConcurrencyStamp = Guid.NewGuid().ToString()
@@ -43,7 +43,7 @@ public class UserConfiguration : IEntityTypeConfiguration<IdentityUser>
                 NormalizedUserName = "SUPER",
                 Email = "super@gmail.com",
                 NormalizedEmail = "SUPER@GMAIL.COM",
-                PhoneNumber = "(55) 85 9 9999-9999",
+                PhoneNumber = "(55) 85 9 9999-9997",
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(new IdentityUser("super"), "!23L6(bNi.22T71,%4vfR{<~tA.]"),
                 SecurityStamp = Guid.NewGuid().ToString(),
                 ConcurrencyStamp = Guid.NewGuid().ToString()
