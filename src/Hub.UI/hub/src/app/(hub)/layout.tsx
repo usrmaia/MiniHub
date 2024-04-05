@@ -21,7 +21,7 @@ export default function Hub({ children }: Readonly<{ children: React.ReactNode }
     <AuthWrapper>
       <Box display='flex'>
         <SideBar buttonList={buttonList} drawerWidth={drawerWidth} />
-        <Box display='flex' flexDirection='column' sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` }, ml: { sm: `${drawerWidth}px` } }}>
+        <Box display='flex' flexDirection='column' sx={{ width: { xs: '100%', sm: `calc(100% - ${drawerWidth}px)` }, ml: { sm: `${drawerWidth}px` } }}>
           <AppAppBar />
           <Container maxWidth='xl' sx={{ mt: 2 }}>
             {children}

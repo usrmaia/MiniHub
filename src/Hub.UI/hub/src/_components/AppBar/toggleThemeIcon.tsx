@@ -10,7 +10,7 @@ export const ToggleThemeIcon = () => {
   const { themeName, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <IconButton onClick={toggleTheme} color='inherit'>
+    <IconButton onClick={toggleTheme} color='inherit' sx={{ display: { xs: 'none', sm: 'flex' } }}>
       {themeName === 'light' ? <Brightness4 /> : <Brightness5 />}
     </IconButton>
   );
