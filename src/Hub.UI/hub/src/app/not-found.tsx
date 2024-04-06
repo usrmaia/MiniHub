@@ -1,5 +1,5 @@
-import { Box, Typography } from '@mui/material'
-import Link from 'next/link'
+import { Box, Typography } from "@mui/material";
+import Link from "next/link";
 
 export default function NotFound() {
   return (
@@ -8,5 +8,5 @@ export default function NotFound() {
       <Typography>Could not find requested resource</Typography>
       <Link href="/">Return Home</Link>
     </Box>
-  )
+  );
 }

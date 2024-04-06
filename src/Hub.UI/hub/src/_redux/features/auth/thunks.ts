@@ -14,7 +14,7 @@ export const loginUser = createAsyncThunk(
     const res = await Axios.post<userToken>(LOGIN_URL, loginData);
     return res.data as userToken;
   }
-)
+);
 
 export const refreshToken = createAsyncThunk(
   "auth/refreshToken",
@@ -26,7 +26,7 @@ export const refreshToken = createAsyncThunk(
     const res = await Axios.post<authToken>(REFRESH_TOKEN_URL);
     return res.data as authToken;
   }
-)
+);
 
 export const currentUser = createAsyncThunk(
   "auth/currentUser",
@@ -34,4 +34,4 @@ export const currentUser = createAsyncThunk(
     const res = await Axios.get<user>(CURRENT_USER_URL);
     return res.data as user;
   }
-)
+);

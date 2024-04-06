@@ -11,5 +11,6 @@
         "API",
         "DB",
         "Project",
+        "ESLint",
     ]
 }

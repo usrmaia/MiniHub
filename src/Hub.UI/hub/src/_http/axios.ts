@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
-import axios from 'axios';
+import axios from "axios";
 
-import env from '@/env';
-import { getAuthToken } from '@/_services';
+import env from "@/env";
+import { getAuthToken } from "@/_services";
 
 const AxiosCreate = () => {
   const token = getAuthToken();
@@ -12,8 +12,8 @@ const AxiosCreate = () => {
     baseURL: env.API_URL,
     timeout: 5000,
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token ? token.accessToken : ''}`,
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token ? token.accessToken : ""}`,
     },
   });
 };
@@ -27,17 +27,17 @@ Axios.interceptors.request.use(
 
 Axios.interceptors.response.use(
   response => {
-    console.debug('API/UI Response:', response);
+    console.debug("API/UI Response:", response);
     return response;
   },
   error => {
     if (error.response) {
-      console.debug('API/UI Response Error:', error.response.data);
-      console.debug('API/UI Status:', error.response.status);
+      console.debug("API/UI Response Error:", error.response.data);
+      console.debug("API/UI Status:", error.response.status);
     } else if (error.request) {
-      console.debug('API/UI Request Error:', error.request);
+      console.debug("API/UI Request Error:", error.request);
     } else {
-      console.debug('API/UI Error:', error.message);
+      console.debug("API/UI Error:", error.message);
     }
     return Promise.reject(error);
   }

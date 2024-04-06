@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
@@ -13,14 +13,14 @@ export default function ChangePassword() {
   const dispatch = useDispatch<AppDispatch>();
   const { register, handleSubmit, watch, formState: { errors } } = useForm<updatedPassword & { confirmPassword: string }>({
     defaultValues: {
-      oldPassword: '',
-      newPassword: '',
-      confirmPassword: '',
+      oldPassword: "",
+      newPassword: "",
+      confirmPassword: "",
     }
   });
 
-  if (env.NODE_ENV !== 'production')
-    console.debug(watch())
+  if (env.NODE_ENV !== "production")
+    console.debug(watch());
 
   const onSubmit = (data: updatedPassword & { confirmPassword: string }) => {
     dispatch(updatePassword({ oldPassword: data.oldPassword, newPassword: data.newPassword, }));
@@ -33,7 +33,7 @@ export default function ChangePassword() {
           fullWidth
           label="Old Password"
           type="password"
-          {...register('oldPassword', { required: true })}
+          {...register("oldPassword", { required: true })}
         />
       </Grid>
       <Grid item xs={12} md={4}>
@@ -41,10 +41,10 @@ export default function ChangePassword() {
           fullWidth
           label="New Password"
           type="password"
-          {...register('newPassword', {
+          {...register("newPassword", {
             required: true,
             validate: (value) =>
-              value !== watch('oldPassword', '') || 'New password must be different from the old password'
+              value !== watch("oldPassword", "") || "New password must be different from the old password"
           })}
           error={!!errors.newPassword}
           helperText={errors.newPassword?.message}

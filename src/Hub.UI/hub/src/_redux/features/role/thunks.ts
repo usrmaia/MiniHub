@@ -11,4 +11,4 @@ export const getAllRoles = createAsyncThunk(
     const res = await Axios.get<role[]>(QUERY_URL);
     return res.data as role[];
   }
-)
+);

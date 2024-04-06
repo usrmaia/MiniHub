@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider } from "@mui/material";
 
-import { LightTheme } from '@/_theme/lightTheme';
+import { LightTheme } from "@/_theme/lightTheme";
 
 export const LightThemeProvider = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
@@ -10,4 +10,4 @@ export const LightThemeProvider = ({ children }: Readonly<{ children: React.Reac
       {children}
     </ThemeProvider>
   );
-}
+};

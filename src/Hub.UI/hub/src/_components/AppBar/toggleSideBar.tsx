@@ -1,4 +1,4 @@
-import { Menu } from '@mui/icons-material';
+import { Menu } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import { useDispatch } from "react-redux";
 
@@ -13,11 +13,11 @@ export const ToggleSideBar = () => {
 
   return (
     <IconButton
-      color='inherit'
+      color="inherit"
       onClick={handleSideBarOpen}
-      sx={{ display: { xs: 'flex', sm: 'none' } }}
+      sx={{ display: { xs: "flex", sm: "none" } }}
     >
       <Menu />
     </IconButton>
   );
-}
+};

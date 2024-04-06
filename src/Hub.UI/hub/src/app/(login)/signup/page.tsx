@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { Box, Button, Checkbox, FormControlLabel, Link, TextField, Typography } from '@mui/material';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Box, Button, Checkbox, FormControlLabel, Link, TextField, Typography } from "@mui/material";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type Inputs = {
   username: string
@@ -10,13 +10,9 @@ type Inputs = {
 }
 
 export default function SingUp() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>()
+  const { register, handleSubmit, } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => alert(data.username + ' ' + data.email + ' ' + data.password)
+  const onSubmit: SubmitHandler<Inputs> = (data) => alert(data.username + " " + data.email + " " + data.password);
 
   const Links = () => (
     <Box display="flex" justifyContent="space-between">
@@ -27,27 +23,27 @@ export default function SingUp() {
   );
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} width='-webkit-fill-available'>
-      <Typography variant="h5" align='center'>
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} width="-webkit-fill-available">
+      <Typography variant="h5" align="center">
         Sign up
       </Typography>
       <TextField
-        autoComplete='username'
-        margin='normal'
+        autoComplete="username"
+        margin="normal"
         fullWidth
         label="Username"
         autoFocus
         {...register("username", { required: true })}
       />
       <TextField
-        margin='normal'
+        margin="normal"
         fullWidth
         label="Email Address"
         autoFocus
         {...register("email", { required: true })}
       />
       <TextField
-        margin='normal'
+        margin="normal"
         fullWidth
         label="Password"
         type="password"

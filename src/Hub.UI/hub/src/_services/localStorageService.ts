@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
 export const getKey = (key: string): string => `@minihub:${key}`;
 
 export const getStorageValue = (key: string, defaultValue?: unknown) => {
-  if (typeof window === 'undefined') return defaultValue || null;
+  if (typeof window === "undefined") return defaultValue || null;
 
   const item = localStorage.getItem(getKey(key));
 
@@ -11,9 +11,9 @@ export const getStorageValue = (key: string, defaultValue?: unknown) => {
 };
 
 export const setStorageValue = (key: string, value: unknown) => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
   localStorage.setItem(getKey(key), JSON.stringify(value));
 
   return value;
-}
+};

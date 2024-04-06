@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Add } from "@mui/icons-material";
 import { Button, Chip, FormControl, Grid, InputLabel, ListItemIcon, MenuItem, Select, TextField, Typography } from "@mui/material";
@@ -17,18 +17,17 @@ import { user } from "@/_types";
 
 export default function Account() {
   const currentUser = useSelector(selectUser);
-  const roles = useSelector(selectRoles);
   const dispatch = useDispatch<AppDispatch>();
-  const { register, handleSubmit, watch, formState: { errors }, setValue, getValues } = useForm<user>({
+  const { register, handleSubmit, watch, setValue, getValues } = useForm<user>({
     defaultValues: currentUser!,
   });
 
-  useEffect(() => {
-    dispatch(getAllRoles());
-  }, []);
+  useEffect(() => { dispatch(getAllRoles()); }, [dispatch]);
 
-  if (env.NODE_ENV !== 'production')
-    console.debug(watch())
+  const roles = useSelector(selectRoles);
+
+  if (env.NODE_ENV !== "production")
+    console.debug(watch());
 
   const onSubmit = (data: user) => {
     dispatch(updateUser({ oldUser: currentUser!, newUser: data }));
@@ -54,7 +53,7 @@ export default function Account() {
         <MenuItem value="" disabled>Add Roles</MenuItem>
         {roles && roles.map(role =>
           <MenuItem key={role.id} value={role.name} onClick={() => handleRoleAdd(role.name)}>
-            <ListItemIcon sx={{ color: 'inherit' }}>
+            <ListItemIcon sx={{ color: "inherit" }}>
               <Add fontSize="small" />
             </ListItemIcon>
             {role.name}
@@ -84,27 +83,27 @@ export default function Account() {
         <TextField
           fullWidth
           label="Username"
-          {...register('userName')}
+          {...register("userName")}
         />
       </Grid>
       <Grid item xs={12} md={4}>
         <TextField
           fullWidth
           label="Email"
-          {...register('email')}
+          {...register("email")}
         />
       </Grid>
       <Grid item xs={12} md={4}>
         <TextField
           fullWidth
           label="Phone"
-          {...register('phoneNumber')}
+          {...register("phoneNumber")}
         />
       </Grid>
       <Grid item xs={12} md={4}>
         <RolesControlItems />
       </Grid>
-      <Grid item xs={12} md={8} alignContent='center' alignItems='center' gap={1}>
+      <Grid item xs={12} md={8} alignContent="center" alignItems="center" gap={1}>
         <UserChips />
       </Grid>
       <Grid item xs={12}>
@@ -124,8 +123,8 @@ export default function Account() {
     <>
       <Typography variant="h5" mb={2}>Account</Typography>
       <Form />
-      <Link href="/account/change-password" style={{ textDecoration: 'none', color: 'inherit' }}>
-        <Typography variant="subtitle2" color='primary' mt={2}>Change Password?</Typography>
+      <Link href="/account/change-password" style={{ textDecoration: "none", color: "inherit" }}>
+        <Typography variant="subtitle2" color="primary" mt={2}>Change Password?</Typography>
       </Link>
     </>
   );

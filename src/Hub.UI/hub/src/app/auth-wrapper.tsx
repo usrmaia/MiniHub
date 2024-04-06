@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
 import { jwtDecode } from "jwt-decode";
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { logoutUser, selectAuthToken, selectStatus, selectUser } from '@/_redux/features/auth/slice';
-import { Loading } from '@/_components';
+import { logoutUser, selectAuthToken, selectStatus, selectUser } from "@/_redux/features/auth/slice";
+import { Loading } from "@/_components";
 import { jwtPayload } from "@/_types";
 
 export const AuthWrapper = ({ children }: Readonly<{ children: React.ReactNode }>) => {
@@ -18,19 +18,19 @@ export const AuthWrapper = ({ children }: Readonly<{ children: React.ReactNode }
 
   useEffect(() => {
     if (token?.accessToken) {
-      const jwt: jwtPayload = jwtDecode(token?.accessToken || '');
+      const jwt: jwtPayload = jwtDecode(token?.accessToken || "");
       const authorized = user?.id === jwt.nameid
         && user?.userName === jwt.unique_name
-        && jwt.role.includes('Colaborador')
+        && jwt.role.includes("Colaborador")
         && jwt.exp > Date.now() / 1000;
 
       if (authorized)
         return;
     }
 
-    push('/signin');
+    push("/signin");
     dispatch(logoutUser());
-  }, [token, user]);
+  }, [dispatch, push, token, user]);
 
-  return status === 'loading' ? <Loading /> : children;
+  return status === "loading" ? <Loading /> : children;
 };

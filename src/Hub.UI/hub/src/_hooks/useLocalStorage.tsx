@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-import { getKey, getStorageValue } from '@/_services';
+import { getKey, getStorageValue } from "@/_services";
 
 /**
  * Custom hook for managing values in local storage.

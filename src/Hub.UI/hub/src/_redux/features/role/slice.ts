@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { getAllRoles } from "./thunks";
-import { role } from "@/_types"
+import { role } from "@/_types";
 
 interface initialStateProps {
   roles: role[] | null;
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
 const initialState: initialStateProps = {
   roles: null,
-  status: 'idle',
+  status: "idle",
   error: null,
 };
 
@@ -22,17 +22,17 @@ const roleSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(getAllRoles.pending, (state) => {
-      state.status = 'loading';
-    })
+      state.status = "loading";
+    });
     builder.addCase(getAllRoles.fulfilled, (state, action) => {
       state.roles = action.payload;
 
-      state.status = 'succeeded';
-    })
+      state.status = "succeeded";
+    });
     builder.addCase(getAllRoles.rejected, (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.error.message || null;
-    })
+    });
   },
   selectors: {
     selectRoles: state => state.roles,

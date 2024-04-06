@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Container } from '@mui/material';
+import { Box, CircularProgress, Container } from "@mui/material";
 
 export const Loading = () => {
   return (
@@ -8,4 +8,4 @@ export const Loading = () => {
       </Box>
     </Container>
   );
-}
+};

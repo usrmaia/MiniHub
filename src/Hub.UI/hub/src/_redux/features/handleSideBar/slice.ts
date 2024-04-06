@@ -2,13 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface initialStateProps {
   open: boolean;
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
 const initialState: initialStateProps = {
   open: false,
-  status: 'idle',
+  status: "idle",
   error: null,
 };
 

@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { Box, Button, Checkbox, FormControlLabel, Link, TextField, Typography } from '@mui/material';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Box, Button, Link, TextField, Typography } from "@mui/material";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type Inputs = {
   username: string
@@ -9,13 +9,9 @@ type Inputs = {
 }
 
 export default function Identity() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>()
+  const { register, handleSubmit, } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => alert(data.username + ' ' + data.email)
+  const onSubmit: SubmitHandler<Inputs> = (data) => alert(data.username + " " + data.email);
 
   const Links = () => (
     <Box display="flex" justifyContent="space-between">
@@ -29,25 +25,25 @@ export default function Identity() {
   );
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} width='-webkit-fill-available'>
-      <Typography variant="h5" align='center'>
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} width="-webkit-fill-available">
+      <Typography variant="h5" align="center">
         Identity
       </Typography>
       <TextField
-        margin='normal'
+        margin="normal"
         fullWidth
         label="Username"
         autoFocus
         {...register("username", { required: true })}
       />
       <TextField
-        margin='normal'
+        margin="normal"
         fullWidth
         label="Email Address"
         autoFocus
         {...register("email", { required: true })}
       />
-      <Typography variant="body2" align='center' mt={1}>
+      <Typography variant="body2" align="center" mt={1}>
         You will receive an email with instructions on how to recover your account.
       </Typography>
       <Button type="submit" fullWidth variant="contained" sx={{ my: 2 }}>

@@ -29,7 +29,7 @@ export const updateUser = createAsyncThunk(
 
     return newUser;
   }
-)
+);
 
 export const updatePassword = createAsyncThunk(
   "user/updatePassword",
@@ -38,4 +38,4 @@ export const updatePassword = createAsyncThunk(
     const res = await Axios.put<user>(PUT_USER_PASSWORD, password);
     return res.data as user;
   }
-) 
+); 

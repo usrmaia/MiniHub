@@ -6,7 +6,8 @@
     "dev": "next dev -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:watch": "esw -w --ext .js,.ts,.jsx,.tsx"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -20,20 +21,22 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.2",
-    "react-icons": "^5.0.1",
     "react-redux": "^9.1.0",
-    "react-toastify": "^10.0.5",
     "redux-logger": "^3.0.6",
     "sharp": "^0.33.3",
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^14.1.4",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/redux-logger": "^3.0.13",
-    "eslint": "^8",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-config-next": "14.1.4",
-    "typescript": "^5"
+    "eslint-watch": "^8.0.0",
+    "typescript": "^5",
+    "typescript-eslint": "^7.5.0"
   }
 }

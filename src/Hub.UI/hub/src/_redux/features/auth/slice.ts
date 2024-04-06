@@ -2,19 +2,19 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { getAuthToken, getUser, setAuthToken, setUser } from "@/_services";
 import { loginUser } from "./thunks";
-import { authToken, user } from "@/_types"
+import { authToken, user } from "@/_types";
 
 interface initialStateProps {
   authToken: authToken | null;
   user: user | null;
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
 const initialState: initialStateProps = {
   authToken: getAuthToken() || null,
   user: getUser() || null,
-  status: 'idle',
+  status: "idle",
   error: null,
 };
 
@@ -23,7 +23,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logoutUser(state) {
-      setAuthToken({ accessToken: '', refreshToken: '' });
+      setAuthToken({} as authToken);
       setUser({} as user);
       state.authToken = null;
       state.user = null;
@@ -31,8 +31,8 @@ const authSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(loginUser.pending, (state) => {
-      state.status = 'loading';
-    })
+      state.status = "loading";
+    });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.authToken = action.payload.authToken;
       state.user = action.payload.user;
@@ -40,12 +40,12 @@ const authSlice = createSlice({
       setAuthToken(action.payload.authToken);
       setUser(action.payload.user);
 
-      state.status = 'succeeded';
-    })
+      state.status = "succeeded";
+    });
     builder.addCase(loginUser.rejected, (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.error.message || null;
-    })
+    });
   },
   selectors: {
     selectAuthToken: state => state.authToken,

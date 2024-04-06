@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import { Box, Button, Checkbox, FormControlLabel, Link, TextField, Typography } from '@mui/material';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useRouter } from 'next/navigation';
+import { Box, Button, Checkbox, FormControlLabel, Link, TextField, Typography } from "@mui/material";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 
-import { loginUser } from '@/_redux/features/auth/thunks';
-import { AppDispatch } from '@/_redux/store';
+import { loginUser } from "@/_redux/features/auth/thunks";
+import { AppDispatch } from "@/_redux/store";
 
 type Inputs = {
   username: string
@@ -20,9 +20,9 @@ export default function SingIn() {
   const { register, handleSubmit } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = data => {
-    dispatch(loginUser({ username: data.username, password: data.password }));
-    push('/hub');
-  }
+    dispatch(loginUser({ username: data.username, password: data.password }))
+      .then(() => push("/hub"));
+  };
 
   const Links = () => (
     <Box display="flex" justifyContent="space-between">
@@ -36,12 +36,12 @@ export default function SingIn() {
   );
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} width='-webkit-fill-available'>
-      <Typography variant="h5" align='center'>
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} width="-webkit-fill-available">
+      <Typography variant="h5" align="center">
         Sign in
       </Typography>
       <TextField
-        margin='normal'
+        margin="normal"
         fullWidth
         label="Username"
         autoFocus

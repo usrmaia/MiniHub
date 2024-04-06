@@ -1,7 +1,7 @@
-import { ThemeOptions, createTheme } from '@mui/material';
-import { grey } from '@mui/material/colors';
+import { ThemeOptions, createTheme } from "@mui/material";
+import { grey } from "@mui/material/colors";
 
-import { colors } from './colors';
+import { colors } from "./colors";
 
 export const GlobalTheme = createTheme({
   palette: {

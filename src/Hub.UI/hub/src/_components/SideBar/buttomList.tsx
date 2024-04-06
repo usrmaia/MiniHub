@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import { Logout } from '@mui/icons-material';
-import Link from 'next/link';
-import React from 'react';
+import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { Logout } from "@mui/icons-material";
+import Link from "next/link";
+import React from "react";
 
-import { useDispatch } from 'react-redux';
-import { logoutUser } from '@_redux/features/auth/slice';
+import { useDispatch } from "react-redux";
+import { logoutUser } from "@_redux/features/auth/slice";
 
 export interface ISideBarProps {
   text: string;
@@ -14,7 +14,7 @@ export interface ISideBarProps {
   icon: React.ReactNode;
 }
 
-const logoutButton: ISideBarProps = { text: 'Logout', to: '/signin', icon: <Logout /> };
+const logoutButton: ISideBarProps = { text: "Logout", to: "/signin", icon: <Logout /> };
 
 export const ButtonList = ({ buttonList }: Readonly<{ buttonList: ISideBarProps[][] }>) => {
   const dispatch = useDispatch();
@@ -25,25 +25,25 @@ export const ButtonList = ({ buttonList }: Readonly<{ buttonList: ISideBarProps[
     buttonList.map((subList, index) =>
       <React.Fragment key={index}>
         {subList.map(({ text, to, icon }, index) => (
-          <ListItem key={text + index} disablePadding sx={{ display: 'block' }}>
-            <Link href={to} style={{ color: 'inherit', textDecoration: 'none' }}>
+          <ListItem key={text + index} disablePadding sx={{ display: "block" }}>
+            <Link href={to} style={{ color: "inherit", textDecoration: "none" }}>
               <ListItemButton>
-                <ListItemIcon sx={{ color: 'inherit' }}>{icon}</ListItemIcon>
+                <ListItemIcon sx={{ color: "inherit" }}>{icon}</ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: 1 }} />
               </ListItemButton>
             </Link>
           </ListItem>
         ))}
-        <Divider key={'Divider' + index} />
+        <Divider key={"Divider" + index} />
       </React.Fragment>
     )
   );
 
 
   const LogoutButton = () => (
-    <ListItem key={logoutButton.text} disablePadding sx={{ display: 'block' }}>
+    <ListItem key={logoutButton.text} disablePadding sx={{ display: "block" }}>
       <ListItemButton onClick={handleLogout}>
-        <ListItemIcon sx={{ color: 'inherit' }}>{logoutButton.icon}</ListItemIcon>
+        <ListItemIcon sx={{ color: "inherit" }}>{logoutButton.icon}</ListItemIcon>
         <ListItemText primary={logoutButton.text} sx={{ opacity: 1 }} />
       </ListItemButton>
     </ListItem>
@@ -57,4 +57,4 @@ export const ButtonList = ({ buttonList }: Readonly<{ buttonList: ISideBarProps[
       </>
     </List>
   );
-}
+};
