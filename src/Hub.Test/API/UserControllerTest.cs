@@ -91,7 +91,7 @@ public class UserControllerTests : GlobalClientRequest
         var user = await GetUser();
         var token = await GetToken(userId: user.Id, userName: user.UserName, password: user.Password);
         _acessToken = token.AuthToken.AccessToken;
-        var model = new UpdatePasswordIM { OldPassword = user.Password, Password = new UserFake().Generate().Password };
+        var model = new UpdatePasswordIM { OldPassword = user.Password, NewPassword = new UserFake().Generate().Password };
 
         var result = await PutFromBody<UserDTO>(_userPasswordClient, model);
 
@@ -101,7 +101,7 @@ public class UserControllerTests : GlobalClientRequest
     [Fact]
     public async Task Put_Password_InvalidOldPassword_ReturnsBadRequestResult()
     {
-        var model = new UpdatePasswordIM { OldPassword = new UserFake().Generate().Password, Password = new UserFake().Generate().Password };
+        var model = new UpdatePasswordIM { OldPassword = new UserFake().Generate().Password, NewPassword = new UserFake().Generate().Password };
 
         var result = await PutFromBody<AppException>(_userPasswordClient, model);
 

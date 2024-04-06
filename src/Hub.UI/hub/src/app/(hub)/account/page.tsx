@@ -2,6 +2,7 @@
 
 import { Add } from "@mui/icons-material";
 import { Button, Chip, FormControl, Grid, InputLabel, ListItemIcon, MenuItem, Select, TextField, Typography } from "@mui/material";
+import Link from "next/link";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -123,6 +124,9 @@ export default function Account() {
     <>
       <Typography variant="h5" mb={2}>Account</Typography>
       <Form />
+      <Link href="/account/change-password" style={{ textDecoration: 'none', color: 'inherit' }}>
+        <Typography variant="subtitle2" color='primary' mt={2}>Change Password?</Typography>
+      </Link>
     </>
   );
 }

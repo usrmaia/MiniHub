@@ -1,9 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { Axios } from "@/_http/axios";
-import { user, userRole } from "@/_types";
+import { updatedPassword, user, userRole } from "@/_types";
 
 const PUT_USER = "/User";
+const PUT_USER_PASSWORD = "/User/password";
 const POST_USER_ROLE = "/User/add-to-role";
 const DELETE_USER_ROLE = "/User/remove-from-role";
 
@@ -29,3 +30,12 @@ export const updateUser = createAsyncThunk(
     return newUser;
   }
 )
+
+export const updatePassword = createAsyncThunk(
+  "user/updatePassword",
+  async (password: updatedPassword): Promise<user> => {
+    console.debug(password);
+    const res = await Axios.put<user>(PUT_USER_PASSWORD, password);
+    return res.data as user;
+  }
+) 

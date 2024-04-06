@@ -88,7 +88,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Put([FromBody] UpdatePasswordIM model)
     {
         var user = (UserDTO)HttpContext.Items["CurrentUserDTO"]!;
-        await _userService.UpdatePassword(user.Id!, model.OldPassword, model.Password);
+        await _userService.UpdatePassword(user.Id!, model.OldPassword, model.NewPassword);
         return Ok(user);
     }
 
