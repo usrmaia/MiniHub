@@ -11,12 +11,13 @@ import { selectUser } from "@/_redux/features/auth/slice";
 import { selectRoles } from "@/_redux/features/role/slice";
 import { getAllRoles } from "@/_redux/features/role/thunks";
 import { updateUser } from "@/_redux/features/user/thunks";
+import { AppDispatch } from "@/_redux/store";
 import { user } from "@/_types";
 
 export default function Account() {
   const currentUser = useSelector(selectUser);
   const roles = useSelector(selectRoles);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { register, handleSubmit, watch, formState: { errors }, setValue, getValues } = useForm<user>({
     defaultValues: currentUser!,
   });
@@ -102,7 +103,7 @@ export default function Account() {
       <Grid item xs={12} md={4}>
         <RolesControlItems />
       </Grid>
-      <Grid item xs={12} md={8} alignContent='center' alignItems='center' wrap="nowrap" gap={1}>
+      <Grid item xs={12} md={8} alignContent='center' alignItems='center' gap={1}>
         <UserChips />
       </Grid>
       <Grid item xs={12}>

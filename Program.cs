@@ -97,10 +97,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: cors["PolicyName"] ?? throw new AppException("Cors: PolicyName is null!", HttpStatusCode.InternalServerError), builder =>
     {
-        builder.WithOrigins(cors["AllowedOrigins"] ?? throw new AppException("Cors: WithOrigins is null!", HttpStatusCode.InternalServerError))
+        builder.AllowAnyOrigin()
             .WithMethods("GET", "POST", "PUT", "DELETE")
-            .WithHeaders("Authorization", "Content-Type")
-            .AllowCredentials();
+            .WithHeaders("Authorization", "Content-Type");
     });
 });
 

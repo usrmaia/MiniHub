@@ -8,6 +8,8 @@
         "User",
         "UI",
         "Redux",
-        "API"
+        "API",
+        "DB",
+        "Project",
     ]
 }
