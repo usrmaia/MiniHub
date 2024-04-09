@@ -2,27 +2,32 @@
 
 import { Box, Button, Checkbox, FormControlLabel, Link, TextField, Typography } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 
+import { useSnackbar } from "@/_contexts";
 import { loginUser } from "@/_redux/features/auth/thunks";
 import { AppDispatch } from "@/_redux/store";
-
-type Inputs = {
-  username: string
-  password: string
-}
+import { selectError, selectStatus } from "@/_redux/features/auth/slice";
+import { useEffect } from "react";
+import { login } from "@/_types";
 
 export default function SingIn() {
   const { push } = useRouter();
   const dispatch = useDispatch<AppDispatch>();
+  const error = useSelector(selectError);
+  const status = useSelector(selectStatus);
+  const snackbar = useSnackbar();
 
-  const { register, handleSubmit } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<login>();
 
-  const onSubmit: SubmitHandler<Inputs> = data => {
-    dispatch(loginUser({ username: data.username, password: data.password }))
-      .then(() => push("/hub"));
-  };
+  const onSubmit: SubmitHandler<login> = data =>
+    dispatch(loginUser(data));
+
+  useEffect(() => {
+    if (status === "failed" && error) snackbar(error);
+    if (status === "succeeded") push("/hub");
+  }, [status]);
 
   const Links = () => (
     <Box display="flex" justifyContent="space-between">

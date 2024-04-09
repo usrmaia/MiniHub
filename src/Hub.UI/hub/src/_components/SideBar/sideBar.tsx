@@ -16,7 +16,6 @@ export const SideBar = ({ buttonList, drawerWidth = 240 }: Readonly<{ buttonList
   const open = useSelector(selectOpen);
 
   const handleSideBarClose = () => dispatch(Close());
-
   const handleSideBarOpen = () => dispatch(Open());
 
   return (
@@ -25,7 +24,7 @@ export const SideBar = ({ buttonList, drawerWidth = 240 }: Readonly<{ buttonList
       open={isMobile ? open : true}
       onOpen={handleSideBarOpen}
       onClose={handleSideBarClose}
-      sx={{ "& .MuiDrawer-paper": { width: drawerWidth, borderRight: "none" } }}
+      sx={{ "& .MuiDrawer-paper": { width: drawerWidth, borderRight: "none", backgroundImage: "none" } }}
     >
       <Header />
       <ButtonList buttonList={buttonList} />

@@ -27,6 +27,7 @@ const authSlice = createSlice({
       setUser({} as user);
       state.authToken = null;
       state.user = null;
+      state.status = "idle";
     },
   },
   extraReducers: builder => {

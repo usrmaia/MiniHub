@@ -12,7 +12,7 @@ export const Avatar = () => {
   const { themeName } = useContext(ThemeContext);
 
   return (
-    <IconButton href="/account" color="inherit" sx={{ display: { xs: "none", sm: "flex" } }}>
+    <IconButton href="/my-account" color="inherit" sx={{ display: { xs: "none", sm: "flex" } }}>
       <AvatarMUI sx={{ width: 24, height: 24, bgcolor: `${themeName === "light" ? colors.black : colors.white}` }}>
         {user?.userName ? user.userName[0].toUpperCase() : ""}
       </AvatarMUI>

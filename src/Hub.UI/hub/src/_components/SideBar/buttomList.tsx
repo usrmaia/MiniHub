@@ -39,7 +39,6 @@ export const ButtonList = ({ buttonList }: Readonly<{ buttonList: ISideBarProps[
     )
   );
 
-
   const LogoutButton = () => (
     <ListItem key={logoutButton.text} disablePadding sx={{ display: "block" }}>
       <ListItemButton onClick={handleLogout}>

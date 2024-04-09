@@ -26,7 +26,6 @@ const roleSlice = createSlice({
     });
     builder.addCase(getAllRoles.fulfilled, (state, action) => {
       state.roles = action.payload;
-
       state.status = "succeeded";
     });
     builder.addCase(getAllRoles.rejected, (state, action) => {
