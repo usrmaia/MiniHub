@@ -1,8 +1,10 @@
-﻿using Hub.Domain.Exceptions;
+﻿using Hub.Domain.DTOs;
+using Hub.Domain.Exceptions;
 using Hub.Domain.Repositories;
 using Hub.Infra.Data.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using System.Net;
 
 namespace Hub.Infra.Data.Repositories;
@@ -27,6 +29,20 @@ public class UserRepository : BaseRepository<IdentityUser>, IUserRepository
 
         return user;
     }
+
+    public async Task<List<UserDTO>> Query()
+    {
+        var query = _userManager.Users.AsNoTracking();
+
+        var users = await query
+            .Select(Build(_userManager))
+            .ToListAsync();
+
+        return users;
+    }
+
+    public static Expression<Func<IdentityUser, UserDTO>> Build(UserManager<IdentityUser> _userManager) =>
+        h => new UserDTO(h, (List<string>)_userManager.GetRolesAsync(h).Result);
 
     public bool IsDefaultUser(IdentityUser user) =>
         user.UserName == "dev" ||
@@ -68,6 +84,7 @@ public class UserRepository : BaseRepository<IdentityUser>, IUserRepository
 
     public async Task<IdentityUser> Add(IdentityUser user, string password)
     {
+        user.Id = Guid.NewGuid().ToString();
         var result = await _userManager.CreateAsync(user, password);
 
         if (!result.Succeeded) CatchError(new Exception(result.Errors.First().Description));

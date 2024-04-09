@@ -32,8 +32,8 @@ public class UserController : ControllerBase
     /// </summary>
     [HttpGet]
     [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
-    public async Task<IActionResult> Get() =>
-        Ok(await _userService.Get());
+    public async Task<IActionResult> Query() =>
+        Ok(await _userService.Query());
 
     /// <summary>
     /// Gets a user by ID.

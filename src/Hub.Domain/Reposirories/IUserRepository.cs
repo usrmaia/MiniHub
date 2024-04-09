@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Hub.Domain.DTOs;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hub.Domain.Repositories;
 
 public interface IUserRepository : IBaseRepository<IdentityUser>
 {
-    // Task<List<IdentityUser>> Query(UserFilter filter);
+    Task<List<UserDTO>> Query();
     Task<IdentityUser> Auth(string userName, string password);
     bool IsDefaultUser(IdentityUser user);
     Task<bool> ExistsById(string id);

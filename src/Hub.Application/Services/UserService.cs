@@ -26,10 +26,8 @@ public class UserService : IUserService
         _passwordValidator = passwordValidator;
     }
 
-    public Task<List<UserDTO>> Get()
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<List<UserDTO>> Query() =>
+        await _userRepository.Query();
 
     public async Task<IdentityUser> GetById(string id) =>
         await _userRepository.GetById(id);

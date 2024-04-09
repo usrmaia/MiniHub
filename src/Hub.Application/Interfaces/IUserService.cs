@@ -5,7 +5,7 @@ namespace Hub.Application.Interfaces;
 
 public interface IUserService
 {
-    Task<List<UserDTO>> Get();
+    Task<List<UserDTO>> Query();
     Task<UserDTO> GetByUserName(string userName);
     Task<IdentityUser> GetById(string id);
     Task<IdentityUser> Create(IdentityUser user, string password);
