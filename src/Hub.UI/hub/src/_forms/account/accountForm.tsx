@@ -1,8 +1,7 @@
 "use client";
 
 import { Add } from "@mui/icons-material";
-import { Button, Chip, FormControl, Grid, InputLabel, ListItemIcon, MenuItem, Select, TextField, Typography } from "@mui/material";
-import Link from "next/link";
+import { Button, Chip, FormControl, Grid, InputLabel, ListItemIcon, MenuItem, Select, TextField } from "@mui/material";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,47 +10,45 @@ import env from "@/env";
 import { selectUser } from "@/_redux/features/auth/slice";
 import { selectRoles } from "@/_redux/features/role/slice";
 import { getAllRoles } from "@/_redux/features/role/thunks";
-import { updateUser } from "@/_redux/features/user/thunks";
+import { postUser, updateUser } from "@/_redux/features/user/thunks";
 import { AppDispatch } from "@/_redux/store";
 import { user } from "@/_types";
+import { includes } from "@/_utils";
 
-export default function Account() {
+export const AccountForm = ({ user }: { user?: user }) => {
   const currentUser = useSelector(selectUser);
+  const allRoles = useSelector(selectRoles);
   const dispatch = useDispatch<AppDispatch>();
-  const { register, handleSubmit, watch, setValue, getValues } = useForm<user>({
-    defaultValues: currentUser!,
+  const { register, handleSubmit, watch, setValue, getValues, formState: { errors } } = useForm<user & { confirmPassword: string }>({
+    defaultValues: { ...user, roles: user?.roles || ["Colaborador"] }
   });
 
-  useEffect(() => { dispatch(getAllRoles()); }, [dispatch]);
-
-  const roles = useSelector(selectRoles);
+  useEffect(() => { dispatch(getAllRoles()); }, []);
 
   if (env.NODE_ENV !== "production")
     console.debug(watch());
 
-  const onSubmit = (data: user) => {
-    dispatch(updateUser({ oldUser: currentUser!, newUser: data }));
-  };
+  const onSubmit = (data: user) =>
+    !user ? dispatch(postUser(data)) :
+      dispatch(updateUser({ oldUser: user, newUser: data }));
 
   const handleRoleAdd = (role: string) => {
     if (getValues().roles.includes(role)) return;
-
     setValue("roles", [...getValues().roles, role]);
   };
 
-  const handleRoleDelete = (role: string) => {
+  const handleRoleDelete = (role: string) =>
     setValue("roles", getValues().roles.filter(r => r !== role));
-  };
 
   const RolesControlItems = () => (
     <FormControl
-      disabled={!currentUser?.roles.includes("Administrador") && !currentUser?.roles.includes("Supervisor") && !currentUser?.roles.includes("Desenvolvedor")}
+      disabled={!includes(currentUser ? currentUser.roles : [], ["Desenvolvedor", "Administrador", "Supervisor"])}
       sx={{ width: "100%" }}
     >
       <InputLabel id="input-modulo">Add Roles</InputLabel>
       <Select>
         <MenuItem value="" disabled>Add Roles</MenuItem>
-        {roles && roles.map(role =>
+        {allRoles && allRoles.map(role =>
           <MenuItem key={role.id} value={role.name} onClick={() => handleRoleAdd(role.name)}>
             <ListItemIcon sx={{ color: "inherit" }}>
               <Add fontSize="small" />
@@ -77,29 +74,56 @@ export default function Account() {
     </>
   );
 
-  const Form = () => (
+  return (
     <Grid container component="form" onSubmit={handleSubmit(onSubmit)} spacing={2}>
       <Grid item xs={12} md={4}>
         <TextField
           fullWidth
           label="Username"
-          {...register("userName")}
+          {...register("userName", { required: true })}
         />
       </Grid>
       <Grid item xs={12} md={4}>
         <TextField
           fullWidth
           label="Email"
-          {...register("email")}
+          {...register("email", { required: true })}
         />
       </Grid>
       <Grid item xs={12} md={4}>
         <TextField
           fullWidth
           label="Phone"
-          {...register("phoneNumber")}
+          {...register("phoneNumber", { required: true })}
         />
       </Grid>
+      {!user && (
+        <>
+          <Grid item xs={12} md={4}>
+            <TextField
+              fullWidth
+              label="Password"
+              type="password"
+              {...register("password", { required: true })}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <TextField
+              fullWidth
+              label="Confirm Password"
+              type="password"
+              {...register("confirmPassword", {
+                required: true,
+                validate: value =>
+                  value === watch("password", "") || "The passwords do not match.",
+              })}
+              error={!!errors.confirmPassword}
+              helperText={errors.confirmPassword?.message}
+            />
+          </Grid>
+          <Grid item xs={12} md={4} />
+        </>
+      )}
       <Grid item xs={12} md={4}>
         <RolesControlItems />
       </Grid>
@@ -113,19 +137,9 @@ export default function Account() {
           color="primary"
           fullWidth
         >
-          Update
+          {user ? "Update" : "Create"}
         </Button>
       </Grid>
     </Grid>
   );
-
-  return (
-    <>
-      <Typography variant="h5" mb={2}>Account</Typography>
-      <Form />
-      <Link href="/account/change-password" style={{ textDecoration: "none", color: "inherit" }}>
-        <Typography variant="subtitle2" color="primary" mt={2}>Change Password?</Typography>
-      </Link>
-    </>
-  );
-}
+};

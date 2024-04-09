@@ -1,3 +1,19 @@
+export type userFilter = {
+  search?: string;
+
+  id?: string;
+  userName?: string;
+  email?: string;
+  phoneNumber?: string;
+  role?: string;
+
+  page?: number;
+  pageSize?: number;
+
+  userNameOrderDesc?: boolean;
+  emailOrderDesc?: boolean;
+};
+
 export type user = {
   id?: string;
   userName: string;

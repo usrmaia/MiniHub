@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
@@ -9,22 +9,15 @@ import { updatePassword } from "@/_redux/features/user/thunks";
 import { AppDispatch } from "@/_redux/store";
 import { updatedPassword } from "@/_types";
 
-export default function ChangePassword() {
+export const UpdatePasswordForm = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<updatedPassword & { confirmPassword: string }>({
-    defaultValues: {
-      oldPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    }
-  });
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<updatedPassword & { confirmPassword: string }>();
 
   if (env.NODE_ENV !== "production")
     console.debug(watch());
 
-  const onSubmit = (data: updatedPassword & { confirmPassword: string }) => {
-    dispatch(updatePassword({ oldPassword: data.oldPassword, newPassword: data.newPassword, }));
-  };
+  const onSubmit = (data: updatedPassword) =>
+    dispatch(updatePassword(data));
 
   const Form = () => (
     <Grid container component="form" onSubmit={handleSubmit(onSubmit)} spacing={2}>
@@ -77,10 +70,5 @@ export default function ChangePassword() {
     </Grid>
   );
 
-  return (
-    <>
-      <Typography variant="h5" mb={2}>Change Password</Typography>
-      <Form />
-    </>
-  );
+  return <Form />;
 }
