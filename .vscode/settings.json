@@ -13,6 +13,7 @@
         "Project",
         "ESLint",
         "Axios",
-        "Auth"
+        "Auth",
+        "Table"
     ]
 }
