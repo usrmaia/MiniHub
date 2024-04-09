@@ -25,23 +25,38 @@
       "@/*": [
         "./src/*"
       ],
-      "@_http/*": [
-        "./src/_http/axios/*"
+      "@app/*": [
+        "./src/app/*"
       ],
       "@_components/*": [
         "./src/_components/*"
       ],
+      "@_forms/*": [
+        "./src/_forms/*"
+      ],
+      "@_contexts/*": [
+        "./src/_contexts/*"
+      ],
       "@_hooks/*": [
         "./src/_hooks/*"
       ],
+      "@_http/*": [
+        "./src/_http/axios/*"
+      ],
       "@_redux/*": [
         "./src/_redux/*",
+      ],
+      "@_tables/*": [
+        "./src/_tables/*"
       ],
       "@_theme/*": [
         "./src/_theme/*"
       ],
       "@_types/*": [
         "./src/_types/*"
+      ],
+      "@_utils/*": [
+        "./src/_utils/*"
       ],
     }
   },

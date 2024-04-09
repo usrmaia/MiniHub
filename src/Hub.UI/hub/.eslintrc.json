@@ -27,10 +27,12 @@
       "double"
     ],
     "no-empty": "warn",
+    "no-unused-vars": "warn",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "react/no-unescaped-entities": "off",
     "no-undef": "off",
-    "no-empty-pattern": "off"
+    "no-empty-pattern": "off",
+    "react-hooks/exhaustive-deps": "off"
   }
 }

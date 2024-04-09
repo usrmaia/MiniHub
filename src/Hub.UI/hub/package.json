@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev -H 0.0.0.0",
     "build": "next build",
+    "build:fast": "next build --no-lint --no-mangling --experimental-app-only",
     "start": "next start",
     "lint": "next lint",
     "lint:watch": "esw -w --ext .js,.ts,.jsx,.tsx"
@@ -12,11 +13,13 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@mui/icons-material": "^5.15.14",
-    "@mui/material": "^5.15.14",
+    "@mui/icons-material": "^5.15.15",
+    "@mui/material": "^5.15.15",
+    "@mui/x-date-pickers": "^7.1.1",
     "@reduxjs/toolkit": "^2.2.2",
     "axios": "^1.6.8",
     "jwt-decode": "^4.0.0",
+    "material-react-table": "^2.12.1",
     "next": "14.1.4",
     "react": "^18",
     "react-dom": "^18",
@@ -33,8 +36,8 @@
     "@types/react-dom": "^18",
     "@types/redux-logger": "^3.0.13",
     "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
     "eslint-config-next": "14.1.4",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-watch": "^8.0.0",
     "typescript": "^5",
     "typescript-eslint": "^7.5.0"
