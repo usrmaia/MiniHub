@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { Axios } from "@/_http/axios";
-import { getAuthToken, setAuthToken } from "@/_services";
 import { authToken, login, user, userToken } from "@/_types";
 
 const LOGIN_URL = "/Auth/login";
@@ -19,11 +18,7 @@ export const loginUser = createAsyncThunk(
 export const refreshToken = createAsyncThunk(
   "auth/refreshToken",
   async (): Promise<authToken> => {
-    const authToken = getAuthToken();
-    authToken.accessToken = authToken.refreshToken;
-    setAuthToken(authToken);
-
-    const res = await Axios.post<authToken>(REFRESH_TOKEN_URL);
+    const res = await Axios.get<authToken>(REFRESH_TOKEN_URL);
     return res.data as authToken;
   }
 );

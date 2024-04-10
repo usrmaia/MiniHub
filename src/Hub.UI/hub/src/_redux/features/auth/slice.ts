@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { getAuthToken, getUser, setAuthToken, setUser } from "@/_services";
-import { loginUser } from "./thunks";
+import { loginUser, refreshToken } from "./thunks";
 import { authToken, user } from "@/_types";
 
 interface initialStateProps {
@@ -44,6 +44,28 @@ const authSlice = createSlice({
       state.status = "succeeded";
     });
     builder.addCase(loginUser.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message || null;
+    });
+
+    builder.addCase(refreshToken.pending, (state) => {
+      const { refreshToken } = getAuthToken() || { refreshToken: "" };
+      setAuthToken({ accessToken: refreshToken, refreshToken: refreshToken } as authToken);
+
+      state.status = "loading";
+    });
+    builder.addCase(refreshToken.fulfilled, (state, action) => {
+      setAuthToken(action.payload);
+      state.authToken = action.payload;
+
+      state.status = "succeeded";
+    });
+    builder.addCase(refreshToken.rejected, (state, action) => {
+      setAuthToken({} as authToken);
+      state.authToken = null;
+      setUser({} as user);
+      state.user = null;
+
       state.status = "failed";
       state.error = action.error.message || null;
     });

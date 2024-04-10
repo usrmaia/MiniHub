@@ -6,12 +6,14 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { logoutUser, selectAuthToken, selectStatus, selectUser } from "@/_redux/features/auth/slice";
+import { refreshToken } from "@/_redux/features/auth/thunks";
+import { AppDispatch } from "@/_redux/store";
 import { Loading } from "@/_components";
 import { jwtPayload } from "@/_types";
 import { includes } from "@/_utils";
 
 export const AuthWrapper = ({ children, authorizedRoles = ["Colaborador"] }: Readonly<{ children: React.ReactNode, authorizedRoles?: string[] }>) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { push } = useRouter();
   const user = useSelector(selectUser);
   const token = useSelector(selectAuthToken);
@@ -29,8 +31,11 @@ export const AuthWrapper = ({ children, authorizedRoles = ["Colaborador"] }: Rea
         && jwt.role.includes("Colaborador")
         && jwt.exp > Date.now() / 1000;
 
-      if (authorized)
+      if (authorized) return;
+      else {
+        dispatch(refreshToken());
         return;
+      }
     }
 
     push("/signin");
