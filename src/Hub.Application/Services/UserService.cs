@@ -2,6 +2,7 @@
 using Hub.Application.Validators;
 using Hub.Domain.DTOs;
 using Hub.Domain.Exceptions;
+using Hub.Domain.Filters;
 using Hub.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 using System.Net;
@@ -26,8 +27,8 @@ public class UserService : IUserService
         _passwordValidator = passwordValidator;
     }
 
-    public async Task<List<UserDTO>> Query() =>
-        await _userRepository.Query();
+    public async Task<QueryResult<UserDTO>> Query(UserFilter filter) =>
+        await _userRepository.Query(filter);
 
     public async Task<IdentityUser> GetById(string id) =>
         await _userRepository.GetById(id);

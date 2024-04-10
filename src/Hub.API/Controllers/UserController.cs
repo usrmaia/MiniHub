@@ -1,5 +1,6 @@
 using AutoMapper;
 using Hub.Domain.DTOs;
+using Hub.Domain.Filters;
 using Hub.API.InputModels;
 using Hub.API.ServiceFilters;
 using Hub.Application.Interfaces;
@@ -32,8 +33,8 @@ public class UserController : ControllerBase
     /// </summary>
     [HttpGet]
     [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
-    public async Task<IActionResult> Query() =>
-        Ok(await _userService.Query());
+    public async Task<IActionResult> Query([FromQuery] UserFilter filter) =>
+        Ok(await _userService.Query(filter));
 
     /// <summary>
     /// Gets a user by ID.

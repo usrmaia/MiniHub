@@ -1,5 +1,6 @@
 ﻿using Hub.Domain.DTOs;
 using Hub.Domain.Exceptions;
+using Hub.Domain.Filters;
 using Hub.Domain.Repositories;
 using Hub.Infra.Data.Context;
 using Microsoft.AspNetCore.Identity;
@@ -30,15 +31,30 @@ public class UserRepository : BaseRepository<IdentityUser>, IUserRepository
         return user;
     }
 
-    public async Task<List<UserDTO>> Query()
+    public async Task<QueryResult<UserDTO>> Query(UserFilter filter)
     {
         var query = _userManager.Users.AsNoTracking();
 
+        if (!string.IsNullOrEmpty(filter.Search)) query = query.Where(u => u.UserName!.Contains(filter.Search) || u.Email!.Contains(filter.Search) || u.PhoneNumber!.Contains(filter.Search));
+
+        if (!string.IsNullOrEmpty(filter.Id)) query = query.Where(u => u.Id == filter.Id);
+        if (!string.IsNullOrEmpty(filter.UserName)) query = query.Where(u => u.UserName!.Contains(filter.UserName));
+        if (!string.IsNullOrEmpty(filter.Email)) query = query.Where(u => u.Email!.Contains(filter.Email));
+        if (!string.IsNullOrEmpty(filter.PhoneNumber)) query = query.Where(u => u.PhoneNumber!.Contains(filter.PhoneNumber));
+        // if (!string.IsNullOrEmpty(filter.Role)) query = query.Where(u => _userManager.IsInRoleAsync(u, filter.Role).Result);
+
+        if (!string.IsNullOrEmpty(filter.UserNameOrderSort)) query = filter.UserNameOrderSort.ToLower() == "asc" ? query.OrderBy(u => u.UserName) : query.OrderByDescending(u => u.UserName);
+        if (!string.IsNullOrEmpty(filter.EmailOrderSort)) query = filter.EmailOrderSort.ToLower() == "asc" ? query.OrderBy(u => u.Email) : query.OrderByDescending(u => u.Email);
+
+        var count = await query.CountAsync();
+
         var users = await query
+            .Skip(filter.PageIndex * filter.PageSize)
+            .Take(filter.PageSize)
             .Select(Build(_userManager))
             .ToListAsync();
 
-        return users;
+        return new(totalCount: count, items: users);
     }
 
     public static Expression<Func<IdentityUser, UserDTO>> Build(UserManager<IdentityUser> _userManager) =>

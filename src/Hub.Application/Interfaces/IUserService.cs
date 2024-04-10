@@ -1,11 +1,12 @@
 ﻿using Hub.Domain.DTOs;
+using Hub.Domain.Filters;
 using Microsoft.AspNetCore.Identity;
 
 namespace Hub.Application.Interfaces;
 
 public interface IUserService
 {
-    Task<List<UserDTO>> Query();
+    Task<QueryResult<UserDTO>> Query(UserFilter filter);
     Task<UserDTO> GetByUserName(string userName);
     Task<IdentityUser> GetById(string id);
     Task<IdentityUser> Create(IdentityUser user, string password);
