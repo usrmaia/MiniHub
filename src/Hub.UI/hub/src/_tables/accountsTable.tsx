@@ -1,44 +1,84 @@
 "use client";
 
-import { MaterialReactTable, MRT_ColumnFiltersState, MRT_PaginationState, useMaterialReactTable, type MRT_ColumnDef, type MRT_SortingState } from "material-react-table";
-import { useEffect, useMemo, useState } from "react";
+import { MaterialReactTable, MRT_ColumnFiltersState, MRT_PaginationState, MRT_TableInstance, useMaterialReactTable, type MRT_ColumnDef, type MRT_SortingState } from "material-react-table";
+import { Button } from "@mui/material";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectUsers } from "@/_redux/features/user/slice";
+import env from "@/env";
+import { selectStatus, selectTotalCount, selectUsers } from "@/_redux/features/user/slice";
 import { getUsers } from "@/_redux/features/user/thunks";
 import { AppDispatch } from "@/_redux/store";
 import { user, userFilter } from "@/_types";
 
 export const AccountsTable = () => {
-  const users = useSelector(selectUsers);
   const dispatch = useDispatch<AppDispatch>();
+  const params = new URLSearchParams();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [filter, setFilter] = useState<userFilter>({ page: 0, pageSize: 10 });
-  const [rowCount, setRowCount] = useState(0);
+  const users = useSelector(selectUsers);
+  const rowCount = useSelector(selectTotalCount);
+
+  const status = useSelector(selectStatus);
+  const isLoading = () => status === "idle" || status === "loading";
+
+  const [globalFilter, setGlobalFilter] = useState<string>("");
+  const [sorting, setSorting] = useState<MRT_SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([]);
+  const [pagination, setPagination] = useState<MRT_PaginationState>({ pageIndex: 0, pageSize: 10 });
+
+  useEffect(() => { onsubmit(); }, []);
+
+  // useEffect(() => { if (env.NODE_ENV !== "production") console.debug("users", users); }), [users];
+  // useEffect(() => { if (env.NODE_ENV !== "production") console.debug("globalFilter", globalFilter); }), [globalFilter];
+  // useEffect(() => { if (env.NODE_ENV !== "production") console.debug("sorting", sorting); }), [sorting];
+  // useEffect(() => { if (env.NODE_ENV !== "production") console.debug("columnFilters", columnFilters); }), [columnFilters];
+  // useEffect(() => { if (env.NODE_ENV !== "production") console.debug("pagination", pagination); }), [pagination];
+  // useEffect(() => { if (env.NODE_ENV !== "production") console.debug("rowCount", rowCount); }), [rowCount];
+
+  const buildQueryString = useCallback(() => {
+    globalFilter && params.set("search", globalFilter);
+    sorting.forEach(sort => params.set(sort.id + "Sort", sort.desc ? "desc" : "asc"));
+    columnFilters.forEach(filter => params.set(filter.id, filter.value as string));
+    params.set("pageIndex", pagination.pageIndex.toString());
+    params.set("pageSize", pagination.pageSize.toString());
+
+    // if (env.NODE_ENV !== "production")
+    //   console.debug("buildQueryString", params.toString());
+
+    return params.toString();
+  }, [globalFilter, sorting, columnFilters, pagination]);
+
+  const getQueryObject = (): userFilter => {
+    const filter: userFilter = {
+      search: params.get("search") ?? undefined,
+      userName: params.get("userName") ?? undefined,
+      email: params.get("email") ?? undefined,
+      phoneNumber: params.get("phoneNumber") ?? undefined,
+      role: params.get("roles") ?? undefined,
+      pageIndex: parseInt(params.get("pageIndex") || "0"),
+      pageSize: parseInt(params.get("pageSize") || "10"),
+      userNameOrderSort: params.get("userNameSort") as "asc" | "desc" ?? undefined,
+      emailOrderSort: params.get("emailSort") as "asc" | "desc" ?? undefined,
+    };
+
+    return filter;
+  };
+
+  const onsubmit = () => {
+    buildQueryString();
+    const filter = getQueryObject();
+
+    // if (env.NODE_ENV !== "production")
+    //   console.debug("onsubmit", filter);
+
+    dispatch(getUsers(filter));
+  };
 
   useEffect(() => {
-    dispatch(getUsers());
-    setIsLoading(false);
-  }, []);
-
-  useEffect(() => { console.debug("user filter", filter); }, [filter]);
-  useEffect(() => { console.debug("rowCount", rowCount); }, [rowCount]);
-
-  useEffect(() => {
-    const url = new URL("https://example.com");
-
-    Object.entries(filter).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== "")
-        url.searchParams.append(key, String(value));
-    });
-
-    console.debug("url", url.toString());
-
-  }, [filter]);
-
-  const handlePaginationChange = ({ pageIndex, pageSize }: { pageIndex: number, pageSize: number }) =>
-    setFilter(prev => ({ ...prev, page: pageIndex, pageSize }));
+    const search = buildQueryString();
+    const newUrl = `${window.location.pathname}?${search}`;
+    window.history.replaceState({}, "", newUrl);
+  }, [status]);
 
   const columns = useMemo<MRT_ColumnDef<user>[]>(
     () => [
@@ -76,6 +116,18 @@ export const AccountsTable = () => {
     [],
   );
 
+  const TopToolbarCustomActions = ({ table }: { table: MRT_TableInstance<user> }) => (
+    <>
+      <Button
+        variant="contained"
+        size="small"
+        onClick={onsubmit}
+      >
+        Run
+      </Button>
+    </>
+  );
+
   const table = useMaterialReactTable({
     columns,
     data: users || [],
@@ -86,30 +138,35 @@ export const AccountsTable = () => {
       },
     }),
 
+    renderTopToolbarCustomActions: TopToolbarCustomActions,
+
     initialState: {
-      pagination: { pageIndex: filter.page, pageSize: filter.pageSize } as MRT_PaginationState,
+      globalFilter,
+      sorting,
+      columnFilters,
+      pagination
     },
 
-    onGlobalFilterChange: value => setFilter(prev => ({ ...prev, search: value })),
+    onGlobalFilterChange: setGlobalFilter,
 
     manualFiltering: true,
-    // onColumnFiltersChange: 
+    onColumnFiltersChange: setColumnFilters,
 
     manualSorting: true,
-    // onSortingChange: 
+    onSortingChange: setSorting,
 
     manualPagination: true,
-    // onPaginationChange: ({ pageIndex, pageSize }) => handlePaginationChange({ pageIndex, pageSize }),
+    onPaginationChange: setPagination,
 
-    rowCount,
+    rowCount: rowCount ?? 0,
 
-    // state: {
-    //   isLoading,
-    //   columnFilters: {} as MRT_ColumnFiltersState,
-    //   globalFilter: filter.search,
-    //   pagination: { pageIndex: filter.page, pageSize: filter.pageSize } as MRT_PaginationState,
-    //   sorting: {} as MRT_SortingState,
-    // },
+    state: {
+      isLoading: isLoading(),
+      columnFilters,
+      globalFilter,
+      pagination,
+      sorting,
+    },
 
     enableColumnResizing: true,
     layoutMode: "grid",

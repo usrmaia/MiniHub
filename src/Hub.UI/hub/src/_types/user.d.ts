@@ -7,11 +7,11 @@ export type userFilter = {
   phoneNumber?: string;
   role?: string;
 
-  page?: number;
+  pageIndex?: number;
   pageSize?: number;
 
-  userNameOrderDesc?: boolean;
-  emailOrderDesc?: boolean;
+  userNameOrderSort?: "asc" | "desc";
+  emailOrderSort?: "asc" | "desc";
 };
 
 export type user = {

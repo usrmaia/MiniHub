@@ -7,6 +7,7 @@ import { getUser, setUser } from "@/_services";
 interface initialStateProps {
   user: user | null;
   users: user[] | null;
+  totalCount: number | null;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
@@ -14,6 +15,7 @@ interface initialStateProps {
 const initialState: initialStateProps = {
   user: null,
   users: null,
+  totalCount: null,
   status: "idle",
   error: null,
 };
@@ -28,7 +30,8 @@ const userSlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(getUsers.fulfilled, (state, action) => {
-      state.users = action.payload;
+      state.users = action.payload.items;
+      state.totalCount = action.payload.totalCount;
       state.status = "succeeded";
     });
     builder.addCase(getUsers.rejected, (state, action) => {
@@ -80,12 +83,13 @@ const userSlice = createSlice({
   selectors: {
     selectUser: state => state.user,
     selectUsers: state => state.users,
+    selectTotalCount: state => state.totalCount,
     selectStatus: state => state.status,
     selectError: state => state.error,
   }
 });
 
 export const { } = userSlice.actions;
-export const { selectError, selectStatus, selectUser, selectUsers } = userSlice.selectors;
+export const { selectError, selectStatus, selectTotalCount, selectUser, selectUsers } = userSlice.selectors;
 
 export default userSlice.reducer;

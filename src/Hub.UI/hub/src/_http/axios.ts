@@ -18,6 +18,7 @@ export const Axios: AxiosInstance = axios.create({
 Axios.interceptors.request.use(
   config => {
     config.headers.Authorization = `Bearer ${getAuthToken().accessToken || ""}`;
+    console.debug("API/UI Request:", config);
     return config;
   },
   error => Promise.reject(error)

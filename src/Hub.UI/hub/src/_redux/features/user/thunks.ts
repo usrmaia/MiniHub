@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { Axios } from "@/_http/axios";
-import { updatedPassword, user, userRole } from "@/_types";
+import { queryResult, updatedPassword, user, userFilter, userRole } from "@/_types";
 
 const USER = "/User";
 const PUT_USER_PASSWORD = "/User/password";
@@ -10,9 +10,9 @@ const DELETE_USER_ROLE = "/User/remove-from-role";
 
 export const getUsers = createAsyncThunk(
   "user/getUsers",
-  async (): Promise<user[]> => {
-    const res = await Axios.get<user[]>(USER);
-    return res.data as user[];
+  async (filter?: userFilter): Promise<queryResult<user>> => {
+    const res = await Axios.get<queryResult<user>>(USER, { params: filter });
+    return res.data as queryResult<user>;
   }
 );
 
