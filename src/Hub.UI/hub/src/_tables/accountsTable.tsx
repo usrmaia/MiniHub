@@ -1,7 +1,8 @@
 "use client";
 
 import { MaterialReactTable, MRT_ColumnFiltersState, MRT_PaginationState, MRT_TableInstance, useMaterialReactTable, type MRT_ColumnDef, type MRT_SortingState } from "material-react-table";
-import { Button } from "@mui/material";
+import { Send } from "@mui/icons-material";
+import { Box, Button, IconButton } from "@mui/material";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,7 +14,6 @@ import { user, userFilter } from "@/_types";
 
 export const AccountsTable = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const params = new URLSearchParams();
 
   const users = useSelector(selectUsers);
   const rowCount = useSelector(selectTotalCount);
@@ -21,10 +21,17 @@ export const AccountsTable = () => {
   const status = useSelector(selectStatus);
   const isLoading = () => status === "idle" || status === "loading";
 
-  const [globalFilter, setGlobalFilter] = useState<string>("");
+  let params: URLSearchParams;
+  if (typeof window === "undefined") params = new URLSearchParams();
+  else params = new URLSearchParams(window.location.search);
+
+  const [globalFilter, setGlobalFilter] = useState<string>(params.get("search") ?? "");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([]);
-  const [pagination, setPagination] = useState<MRT_PaginationState>({ pageIndex: 0, pageSize: 10 });
+  const [pagination, setPagination] = useState<MRT_PaginationState>({
+    pageIndex: parseInt(params.get("pageIndex") as string) || 0,
+    pageSize: parseInt(params.get("pageSize") as string) || 10
+  });
 
   useEffect(() => { onsubmit(); }, []);
 
@@ -42,8 +49,8 @@ export const AccountsTable = () => {
     params.set("pageIndex", pagination.pageIndex.toString());
     params.set("pageSize", pagination.pageSize.toString());
 
-    // if (env.NODE_ENV !== "production")
-    //   console.debug("buildQueryString", params.toString());
+    if (env.NODE_ENV !== "production")
+      console.debug("buildQueryString", params.toString());
 
     return params.toString();
   }, [globalFilter, sorting, columnFilters, pagination]);
@@ -68,8 +75,8 @@ export const AccountsTable = () => {
     buildQueryString();
     const filter = getQueryObject();
 
-    // if (env.NODE_ENV !== "production")
-    //   console.debug("onsubmit", filter);
+    if (env.NODE_ENV !== "production")
+      console.debug("onsubmit", filter);
 
     dispatch(getUsers(filter));
   };
@@ -116,17 +123,34 @@ export const AccountsTable = () => {
     [],
   );
 
-  const TopToolbarCustomActions = ({ table }: { table: MRT_TableInstance<user> }) => (
-    <>
-      <Button
-        variant="contained"
-        size="small"
-        onClick={onsubmit}
-      >
-        Run
-      </Button>
-    </>
-  );
+  const renderTopToolbarCustomActions = ({ table }: { table: MRT_TableInstance<user> }) => {
+    const Buttons = () => (
+      <>
+        <Button
+          variant="contained"
+          size="small"
+          onClick={onsubmit}
+        >
+          Run
+        </Button>
+      </>
+    );
+
+    const IconButtons = () => (
+      <>
+        <IconButton size="small">
+          <Send fontSize="inherit" />
+        </IconButton>
+      </>
+    );
+
+    return (
+      <Box display='flex' justifyContent='space-between' width='-webkit-fill-available' height={40}>
+        <Buttons />
+        <IconButtons />
+      </Box>
+    );
+  };
 
   const table = useMaterialReactTable({
     columns,
@@ -138,13 +162,15 @@ export const AccountsTable = () => {
       },
     }),
 
-    renderTopToolbarCustomActions: TopToolbarCustomActions,
+    renderTopToolbarCustomActions: renderTopToolbarCustomActions,
 
     initialState: {
       globalFilter,
       sorting,
       columnFilters,
-      pagination
+      pagination,
+      showColumnFilters: true,
+      density: "compact",
     },
 
     onGlobalFilterChange: setGlobalFilter,
