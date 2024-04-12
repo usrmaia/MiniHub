@@ -71,4 +71,4 @@ export const UpdatePasswordForm = () => {
   );
 
   return <Form />;
-}
+};
