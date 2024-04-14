@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getUsers, postUser, updatePassword, updateUser } from "./thunks";
+import { deleteUser, getUsers, postUser, updatePassword, updateUser } from "./thunks";
 import { user } from "@/_types";
 import { getUser, setUser } from "@/_services";
 
@@ -76,6 +76,18 @@ const userSlice = createSlice({
       state.status = "succeeded";
     });
     builder.addCase(updatePassword.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message || null;
+    });
+
+    builder.addCase(deleteUser.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(deleteUser.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.status = "succeeded";
+    });
+    builder.addCase(deleteUser.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message || null;
     });

@@ -60,3 +60,11 @@ export const updatePassword = createAsyncThunk(
     return res.data as user;
   }
 );
+
+export const deleteUser = createAsyncThunk(
+  "user/deleteUser",
+  async (id: string): Promise<user> => {
+    const res = await Axios.delete<user>(`${USER}/${id}`);
+    return res.data as user;
+  }
+);
