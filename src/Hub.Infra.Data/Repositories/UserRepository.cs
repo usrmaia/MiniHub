@@ -33,15 +33,16 @@ public class UserRepository : BaseRepository<IdentityUser>, IUserRepository
 
     public async Task<QueryResult<UserDTO>> Query(UserFilter filter)
     {
-        var query = _userManager.Users.AsNoTracking();
+        var query = _context.Users.AsNoTracking();
 
         if (!string.IsNullOrEmpty(filter.Search)) query = query.Where(u => u.UserName!.Contains(filter.Search) || u.Email!.Contains(filter.Search) || u.PhoneNumber!.Contains(filter.Search));
 
         if (!string.IsNullOrEmpty(filter.Id)) query = query.Where(u => u.Id == filter.Id);
-        if (!string.IsNullOrEmpty(filter.UserName)) query = query.Where(u => u.UserName!.Contains(filter.UserName));
-        if (!string.IsNullOrEmpty(filter.Email)) query = query.Where(u => u.Email!.Contains(filter.Email));
+        if (!string.IsNullOrEmpty(filter.UserName)) query = query.Where(u => u.UserName!.ToUpper().Contains(filter.UserName.ToUpper()));
+        if (!string.IsNullOrEmpty(filter.Email)) query = query.Where(u => u.Email!.ToUpper().Contains(filter.Email.ToUpper()));
         if (!string.IsNullOrEmpty(filter.PhoneNumber)) query = query.Where(u => u.PhoneNumber!.Contains(filter.PhoneNumber));
-        // if (!string.IsNullOrEmpty(filter.Role)) query = query.Where(u => _userManager.IsInRoleAsync(u, filter.Role).Result);
+        if (!string.IsNullOrEmpty(filter.Role)) query = query.Where(u => _context.Roles.Any(r => r.Name!.ToUpper().Contains(filter.Role.ToUpper()) &&
+            _context.UserRoles.Any(ur => ur.RoleId == r.Id && ur.UserId == u.Id)));
 
         if (!string.IsNullOrEmpty(filter.UserNameOrderSort)) query = filter.UserNameOrderSort.ToLower() == "asc" ? query.OrderBy(u => u.UserName) : query.OrderByDescending(u => u.UserName);
         if (!string.IsNullOrEmpty(filter.EmailOrderSort)) query = filter.EmailOrderSort.ToLower() == "asc" ? query.OrderBy(u => u.Email) : query.OrderByDescending(u => u.Email);
@@ -51,14 +52,21 @@ public class UserRepository : BaseRepository<IdentityUser>, IUserRepository
         var users = await query
             .Skip(filter.PageIndex * filter.PageSize)
             .Take(filter.PageSize)
-            .Select(Build(_userManager))
+            .Select(u => new UserDTO
+            {
+                Id = u.Id,
+                UserName = u.UserName!,
+                Email = u.Email!,
+                PhoneNumber = u.PhoneNumber!,
+                // SQLite doesn't support the query below
+                // Roles = _context.Roles.Where(r => _context.UserRoles.Any(ur => ur.RoleId == r.Id && ur.UserId == u.Id)).Select(r => r.Name!).ToList()
+            })
             .ToListAsync();
 
-        return new(totalCount: count, items: users);
-    }
+        users.ForEach(async u => u.Roles = await GetRoles(await GetById(u.Id!)));
 
-    public static Expression<Func<IdentityUser, UserDTO>> Build(UserManager<IdentityUser> _userManager) =>
-        h => new UserDTO(h, (List<string>)_userManager.GetRolesAsync(h).Result);
+        return new(users, count);
+    }
 
     public bool IsDefaultUser(IdentityUser user) =>
         user.UserName == "dev" ||
