@@ -2,6 +2,7 @@
 using Hub.Application.Interfaces;
 using Hub.Domain.DTOs;
 using Hub.Domain.Entities;
+using Hub.Domain.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hub.API;
@@ -29,8 +30,8 @@ public class DirectoryController : ControllerBase
     /// </summary>
     /// <returns>An <see cref="IActionResult"/> representing the response of the operation.</returns>
     [HttpGet]
-    public async Task<IActionResult> Get() =>
-        Ok(await _directoryService.GetAll());
+    public async Task<IActionResult> Query([FromQuery] DirectoryFilter filter) =>
+        Ok(await _directoryService.Query(filter));
 
     /// <summary>
     /// Retrieves a directory by its ID.

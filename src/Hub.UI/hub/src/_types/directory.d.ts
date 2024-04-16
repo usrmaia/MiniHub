@@ -1,10 +1,29 @@
+import { file, flag, role, user } from "@/_types";
+
+export type directoryFilter = {
+  search?: string;
+
+  id?: string;
+  name?: string;
+  flag?: string;
+  role?: string;
+  userId?: string;
+
+  pageIndex?: number;
+  pageSize?: number;
+
+  nameOrderSort?: "asc" | "desc";
+  createdAtOrderSort?: "asc" | "desc";
+  updatedAtOrderSort?: "asc" | "desc";
+};
+
 export type directory = {
   id?: string;
   name: string;
   description?: string;
   parentId?: string;
   createdAt?: Date;
-  updatedAt?: Date;
+  updatedAt?: string;
   files: file[];
   flags: flag[];
   roles: role[];

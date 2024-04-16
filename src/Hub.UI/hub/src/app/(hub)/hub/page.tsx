@@ -1,5 +1,12 @@
-export default function Hub() {
+import { Typography } from "@mui/material";
+
+import { DirectoriesTable } from "@/_tables";
+
+export default function Page() {
   return (
-    "hub"
+    <>
+      <Typography variant="h5" mb={2}>Directories</Typography>
+      <DirectoriesTable />
+    </>
   );
 }

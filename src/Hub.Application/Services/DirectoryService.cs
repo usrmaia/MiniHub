@@ -2,6 +2,7 @@
 using Hub.Domain.DTOs;
 using Hub.Domain.Entities;
 using Hub.Domain.Exceptions;
+using Hub.Domain.Filters;
 using Hub.Domain.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using System.Net;
@@ -14,6 +15,9 @@ public class DirectoryService : IDirectoryService
 
     public DirectoryService(IDirectoryRepository directoryRepository) =>
         _directoryRepository = directoryRepository;
+
+    public async Task<QueryResult<DirectoryE>> Query(DirectoryFilter filter) =>
+        await _directoryRepository.Query(filter);
 
     public async Task<List<DirectoryE>> GetAll() =>
         await _directoryRepository.GetAll();

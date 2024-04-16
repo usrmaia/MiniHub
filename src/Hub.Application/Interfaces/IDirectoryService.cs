@@ -1,10 +1,12 @@
 ﻿using Hub.Domain.DTOs;
 using Hub.Domain.Entities;
+using Hub.Domain.Filters;
 
 namespace Hub.Application.Interfaces;
 
 public interface IDirectoryService
 {
+    Task<QueryResult<DirectoryE>> Query(DirectoryFilter filter);
     Task<List<DirectoryE>> GetAll();
     Task<DirectoryE> GetById(string id);
     Task<int> GetCount();
