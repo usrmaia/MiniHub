@@ -9,7 +9,7 @@ import { selectStatus, selectTotalCount, selectDirectories } from "@/_redux/feat
 import { getDirectories } from "@/_redux/features/directory/thunks";
 import { AppDispatch } from "@/_redux/store";
 import { directory, directoryFilter } from "@/_types";
-import { useDefaultMaterialReactTable } from "./defaultMaterialReactTable";
+import { useHubMaterialReactTable } from "./hubMaterialReactTable";
 
 export const DirectoriesTable = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -128,7 +128,7 @@ export const DirectoriesTable = () => {
     },
   ], [],);
 
-  return useDefaultMaterialReactTable({
+  return useHubMaterialReactTable({
     columns,
     data: directories || [],
     title: "Directories",

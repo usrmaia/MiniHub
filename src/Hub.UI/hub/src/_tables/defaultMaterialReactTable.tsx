@@ -109,8 +109,8 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
     data,
     ...props,
 
-    renderTopToolbarCustomActions: renderTopToolbarCustomActions,
-    renderToolbarInternalActions: renderToolbarInternalActions,
+    renderTopToolbarCustomActions: props.renderTopToolbarCustomActions ?? renderTopToolbarCustomActions,
+    renderToolbarInternalActions: props.renderToolbarInternalActions ?? renderToolbarInternalActions,
 
     //#region setStates
 

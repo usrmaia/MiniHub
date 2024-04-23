@@ -60,10 +60,12 @@ public class UserRepository : BaseRepository<IdentityUser>, IUserRepository
                 PhoneNumber = u.PhoneNumber!,
                 // SQLite doesn't support the query below
                 // Roles = _context.Roles.Where(r => _context.UserRoles.Any(ur => ur.RoleId == r.Id && ur.UserId == u.Id)).Select(r => r.Name!).ToList()
+                Roles = _context.UserRoles
+                    .Where(ur => ur.UserId == u.Id)
+                    .Join(_context.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => r.Name!)
+                    .ToList()
             })
             .ToListAsync();
-
-        users.ForEach(async u => u.Roles = await GetRoles(await GetById(u.Id!)));
 
         return new(users, count);
     }
