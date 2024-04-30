@@ -4,17 +4,20 @@ import { MRT_ColumnFiltersState, MRT_PaginationState, type MRT_ColumnDef, type M
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { ItemName } from "@/_components";
 import env from "@/env";
-import { selectStatus, selectTotalCount, selectDirectories } from "@/_redux/features/directory/slice";
-import { getDirectories } from "@/_redux/features/directory/thunks";
+import { selectDirectories, selectFiles, selectItems, selectStatus, selectTotalCount } from "@/_redux/features/hub/slice";
+import { getItems } from "@/_redux/features/hub/thunks";
 import { AppDispatch } from "@/_redux/store";
-import { directory, directoryFilter } from "@/_types";
+import { directory, file, items, itemsFilter } from "@/_types";
 import { useHubMaterialReactTable } from "./hubMaterialReactTable";
 
 export const DirectoriesTable = () => {
   const dispatch = useDispatch<AppDispatch>();
 
+  const items = useSelector(selectItems);
   const directories = useSelector(selectDirectories);
+  const files = useSelector(selectFiles);
   const rowCount = useSelector(selectTotalCount);
 
   const status = useSelector(selectStatus);
@@ -27,10 +30,6 @@ export const DirectoriesTable = () => {
   const [globalFilter, setGlobalFilter] = useState<string>(params.get("search") ?? "");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([]);
-  const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex: parseInt(params.get("pageIndex") as string) || 0,
-    pageSize: parseInt(params.get("pageSize") as string) || 10
-  });
 
   const toCreate = "/directory";
   const toEdit = "/directory";
@@ -52,24 +51,26 @@ export const DirectoriesTable = () => {
     globalFilter && params.set("search", globalFilter);
     sorting.forEach(sort => params.set(sort.id + "Sort", sort.desc ? "desc" : "asc"));
     columnFilters.forEach(filter => params.set(filter.id, filter.value as string));
-    params.set("pageIndex", pagination.pageIndex.toString());
-    params.set("pageSize", pagination.pageSize.toString());
 
     // if (env.NODE_ENV !== "production")
     //   console.debug("buildQueryString", params.toString());
 
     return params.toString();
-  }, [globalFilter, sorting, columnFilters, pagination]);
+  }, [globalFilter, sorting, columnFilters]);
 
-  const getQueryObject = (): directoryFilter => {
-    const filter: directoryFilter = {
+  const getQueryObject = (): itemsFilter => {
+    const filter: itemsFilter = {
       search: params.get("search") ?? undefined,
       name: params.get("name") ?? undefined,
-      flag: params.get("flag") ?? undefined,
+      fileId: params.get("file") ?? undefined,
+      directoryId: params.get("directory") ?? undefined,
+      parentId: params.get("parent") ?? undefined,
+      flagId: params.get("flag") ?? undefined,
+      roleId: params.get("role") ?? undefined,
       userId: params.get("userId") ?? undefined,
-      pageIndex: parseInt(params.get("pageIndex") || "0"),
-      pageSize: parseInt(params.get("pageSize") || "10"),
       nameOrderSort: params.get("nameSort") as "asc" | "desc" ?? undefined,
+      flagOrderSort: params.get("flagSort") as "asc" | "desc" ?? undefined,
+      userNameOrderSort: params.get("userNameSort") as "asc" | "desc" ?? undefined,
       createdAtOrderSort: params.get("createdAtSort") as "asc" | "desc" ?? undefined,
       updatedAtOrderSort: params.get("updatedAtSort") as "asc" | "desc" ?? undefined,
     };
@@ -84,7 +85,7 @@ export const DirectoriesTable = () => {
     // if (env.NODE_ENV !== "production")
     //   console.debug("onSubmit", filter);
 
-    dispatch(getDirectories(filter));
+    dispatch(getItems(filter));
   };
 
   useEffect(() => {
@@ -93,34 +94,28 @@ export const DirectoriesTable = () => {
     window.history.replaceState({}, "", newUrl);
   }, [status]);
 
-  const columns = useMemo<MRT_ColumnDef<directory>[]>(() => [
-    {
-      accessorKey: "id",
-      header: "ID",
-      size: 80,
-      Cell: ({ row }) => row.original.id ? row.original.id.slice(0, 8) + "..." : "",
-      enableSorting: false,
-    },
+  const columns = useMemo<MRT_ColumnDef<directory & file>[]>(() => [
     {
       accessorKey: "name",
       header: "Name",
       size: 200,
+      Cell: ({ row }) => <ItemName name={row.original.name} />,
     },
     {
       accessorKey: "flags",
       header: "Flags",
-      size: 100,
-      Cell: ({ row }) => row.original.flags.map(f => f.name).join(", "),
+      size: 75,
+      Cell: ({ row }) => row.original.flags.map(flag => flag.name).join(", "),
     },
     {
       accessorKey: "user.userName",
       header: "Owner",
-      size: 100,
+      size: 75,
     },
     {
       accessorKey: "updatedAt",
       header: "Last Updated",
-      size: 200,
+      size: 75,
       Cell: ({ row }) => {
         const lastUpdate = new Date(row.original.updatedAt ?? "");
         return lastUpdate ? lastUpdate.toLocaleTimeString() + " " + lastUpdate.toLocaleDateString() : "";
@@ -130,32 +125,26 @@ export const DirectoriesTable = () => {
 
   return useHubMaterialReactTable({
     columns,
-    data: directories || [],
+    data: [...(directories ?? []), ...(files ?? [])] as (directory & file)[],
     title: "Directories",
 
     setGlobalFilter,
     setColumnFilters,
     setSorting,
-    setPagination,
-    rowCount: rowCount ?? directories?.length ?? 0,
 
     initialState: {
       globalFilter,
       sorting,
       columnFilters,
-      pagination,
     },
 
     state: {
       columnFilters,
       globalFilter,
-      pagination,
       sorting,
     },
 
     onSubmit,
-    toCreate,
-    toEdit,
     // handleDelete,
 
     isLoading,

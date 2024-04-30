@@ -44,6 +44,8 @@ export const useHubMaterialReactTable = <TData extends MRT_RowData>(
     columns,
     data,
 
+    enablePagination: false,
+
     renderTopToolbarCustomActions: () => <></>,
     renderToolbarInternalActions: renderToolbarInternalActions,
 

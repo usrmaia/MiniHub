@@ -88,6 +88,9 @@ builder.Services.AddTransient<IDirectoryFlagService, DirectoryFlagService>();
 builder.Services.AddTransient<IDirectoryRoleRepository, DirectoryRoleRepository>();
 builder.Services.AddTransient<IDirectoryRoleService, DirectoryRoleService>();
 
+builder.Services.AddTransient<IHubService, HubService>();
+builder.Services.AddTransient<IHubRepository, HubRepository>();
+
 #endregion
 
 #region CORS
