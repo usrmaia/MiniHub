@@ -1,7 +1,7 @@
 "use client";
 
-import { MRT_ColumnFiltersState, MRT_PaginationState, type MRT_ColumnDef, type MRT_SortingState } from "material-react-table";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_Row, type MRT_ColumnDef, type MRT_SortingState } from "material-react-table";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { ItemName } from "@/_components";
@@ -11,6 +11,7 @@ import { getItems } from "@/_redux/features/hub/thunks";
 import { AppDispatch } from "@/_redux/store";
 import { directory, file, items, itemsFilter } from "@/_types";
 import { useHubMaterialReactTable } from "./hubMaterialReactTable";
+import { ThemeContext } from "@/_theme";
 
 export const DirectoriesTable = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -19,6 +20,8 @@ export const DirectoriesTable = () => {
   const directories = useSelector(selectDirectories);
   const files = useSelector(selectFiles);
   const rowCount = useSelector(selectTotalCount);
+
+  const { isMobile } = useContext(ThemeContext);
 
   const status = useSelector(selectStatus);
   const isLoading = () => status === "idle" || status === "loading";
@@ -29,7 +32,6 @@ export const DirectoriesTable = () => {
 
   const [globalFilter, setGlobalFilter] = useState<string>(params.get("search") ?? "");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([]);
 
   const toCreate = "/directory";
   const toEdit = "/directory";
@@ -50,13 +52,12 @@ export const DirectoriesTable = () => {
 
     globalFilter && params.set("search", globalFilter);
     sorting.forEach(sort => params.set(sort.id + "Sort", sort.desc ? "desc" : "asc"));
-    columnFilters.forEach(filter => params.set(filter.id, filter.value as string));
 
     // if (env.NODE_ENV !== "production")
     //   console.debug("buildQueryString", params.toString());
 
     return params.toString();
-  }, [globalFilter, sorting, columnFilters]);
+  }, [globalFilter, sorting]);
 
   const getQueryObject = (): itemsFilter => {
     const filter: itemsFilter = {
@@ -86,6 +87,22 @@ export const DirectoriesTable = () => {
     //   console.debug("onSubmit", filter);
 
     dispatch(getItems(filter));
+  };
+
+  const handleClick = (row: directory & file) => {
+    if (env.NODE_ENV !== "production")
+      console.debug("handleClick", row);
+
+    const extension = row.name.split(".").slice(1, 2).join(".");
+
+    if (!extension) {
+      // add parent to query /hub/directories
+      params.set("parent", row.name);
+      buildQueryString();
+      const filter = getQueryObject();
+      dispatch(getItems({ ...filter, parentId: row.id }));
+      return;
+    }
   };
 
   useEffect(() => {
@@ -129,17 +146,27 @@ export const DirectoriesTable = () => {
     title: "Directories",
 
     setGlobalFilter,
-    setColumnFilters,
     setSorting,
 
+    muiTableBodyRowProps: ({ row }) => ({
+      onClick: event => {
+        if (isMobile) handleClick(row.original);
+      },
+      onDoubleClick: event => {
+        if (!isMobile) handleClick(row.original);
+      },
+      sx: {
+        cursor: "pointer",
+      },
+    }),
+
     initialState: {
+      showColumnFilters: false,
       globalFilter,
       sorting,
-      columnFilters,
     },
 
     state: {
-      columnFilters,
       globalFilter,
       sorting,
     },

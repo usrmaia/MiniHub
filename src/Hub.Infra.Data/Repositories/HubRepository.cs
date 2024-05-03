@@ -37,10 +37,10 @@ public class HubRepository : IHubRepository
         {
             queryDirectories = queryDirectories.Where(d => d.Id == filter.DirectoryId);
         }
-        if (!string.IsNullOrEmpty(filter.ParentId))
-        {
-            queryDirectories = queryDirectories.Where(d => d.ParentId == filter.ParentId);
-        }
+
+        queryDirectories = queryDirectories.Where(d => d.ParentId == filter.ParentId);
+        queryFiles = queryFiles.Where(f => f.DirectoryId == filter.ParentId);
+
         if (!string.IsNullOrEmpty(filter.FlagId))
         {
             queryDirectories = queryDirectories.Where(d => _context.DirectoriesFlags.Any(df => df.FlagId == filter.FlagId && df.DirectoryId == d.Id));

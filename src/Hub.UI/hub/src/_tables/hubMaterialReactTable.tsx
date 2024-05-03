@@ -6,9 +6,10 @@ import { useDispatch } from "react-redux";
 
 import { useDefaultMaterialReactTable } from "./defaultMaterialReactTable";
 import { AppDispatch } from "@/_redux/store";
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, Button, FormControl, IconButton, InputLabel, ListItemIcon, MenuItem, Select } from "@mui/material";
 import Link from "next/link";
-import { Add, ClearAll, Delete, Edit, FileDownload, Share } from "@mui/icons-material";
+import { Add, ClearAll, Delete, Edit, Face, FileDownload, Share } from "@mui/icons-material";
+import { Loading } from "@/_components";
 
 interface Props<TData extends MRT_RowData> extends MRT_TableOptions<TData> {
   columns: MRT_ColumnDef<TData>[];
@@ -32,6 +33,38 @@ export const useHubMaterialReactTable = <TData extends MRT_RowData>(
 ) => {
   const dispatch = useDispatch<AppDispatch>();
 
+  const renderTopToolbarCustomActions = ({ table }: { table: MRT_TableInstance<TData> }) => (
+    <Box display="flex" gap={1}>
+      <FormControl key={"input-type"} size="small" sx={{ minWidth: 150 }}>
+        <InputLabel id="input-type">Type</InputLabel>
+        <Select>
+          <MenuItem value="docs">Docs</MenuItem>
+          <MenuItem value="sheets">Sheets</MenuItem>
+          <MenuItem value="slides">Slides</MenuItem>
+          <MenuItem value="forms">Forms</MenuItem>
+          <MenuItem value="images">Images</MenuItem>
+          <MenuItem value="pdfs">PDFs</MenuItem>
+          <MenuItem value="videos">Videos</MenuItem>
+          <MenuItem value="folders">Folders</MenuItem>
+          <MenuItem value="audios">Audios</MenuItem>
+          <MenuItem value="zips">Zips</MenuItem>
+          <MenuItem value="others">Others</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl key={"input-peoples"} size="small" sx={{ minWidth: 200 }}>
+        <InputLabel id="input-peoples">Peoples</InputLabel>
+        <Select>
+          <MenuItem value="people-1">
+            <ListItemIcon sx={{ color: "inherit" }}>
+              <Face />
+            </ListItemIcon>
+            {"People 1"}
+          </MenuItem>
+        </Select>
+      </FormControl>
+    </Box>
+  );
+
   const renderToolbarInternalActions = ({ table }: { table: MRT_TableInstance<TData> }) => [
     <MRT_ToggleGlobalFilterButton key="globalFilter" table={table} />,
     // <IconButton key="share" size="medium" aria-label="teste" onClick={handleShare}><Share /></IconButton>,
@@ -46,8 +79,12 @@ export const useHubMaterialReactTable = <TData extends MRT_RowData>(
 
     enablePagination: false,
 
-    renderTopToolbarCustomActions: () => <></>,
+    renderTopToolbarCustomActions: renderTopToolbarCustomActions,
     renderToolbarInternalActions: renderToolbarInternalActions,
+
+    initialState: {
+      showColumnFilters: false,
+    },
 
     ...props,
   });
