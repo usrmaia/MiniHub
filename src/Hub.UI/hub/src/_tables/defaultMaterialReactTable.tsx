@@ -23,6 +23,7 @@ interface Props<TData extends MRT_RowData> extends MRT_TableOptions<TData> {
   rowCount?: number;
   initialSatate?: Partial<MRT_TableState<TData>>;
   state?: Partial<MRT_TableState<TData>>;
+  enableRowSelection?: boolean;
   onSubmit?: () => void;
   isLoading?: () => boolean;
   title: string;
@@ -122,7 +123,7 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
     manualSorting: props.manualSorting ?? true,
     onSortingChange: props.setSorting,
 
-    enableRowSelection: true,
+    enableRowSelection: props.enableRowSelection ?? true,
     getRowId: row => row.id ?? "",
     onRowSelectionChange: setRowSelection,
 

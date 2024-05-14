@@ -8,7 +8,7 @@ import { useDefaultMaterialReactTable } from "./defaultMaterialReactTable";
 import { AppDispatch } from "@/_redux/store";
 import { Box, Button, FormControl, IconButton, InputLabel, ListItemIcon, MenuItem, Select } from "@mui/material";
 import Link from "next/link";
-import { Add, ClearAll, Delete, Edit, Face, FileDownload, Share } from "@mui/icons-material";
+import { Add, ClearAll, Delete, Edit, Face, FileDownload, Info, Share } from "@mui/icons-material";
 import { Loading } from "@/_components";
 
 interface Props<TData extends MRT_RowData> extends MRT_TableOptions<TData> {
@@ -26,6 +26,7 @@ interface Props<TData extends MRT_RowData> extends MRT_TableOptions<TData> {
   title: string;
   toUpload?: string;
   handleDelete?: (id: string) => void;
+  handleDownload?: (row: TData) => void;
 }
 
 export const useHubMaterialReactTable = <TData extends MRT_RowData>(
@@ -78,12 +79,33 @@ export const useHubMaterialReactTable = <TData extends MRT_RowData>(
     data,
 
     enablePagination: false,
+    enableRowSelection: false,
+
+    enableRowActions: true,
+
+    layoutMode: 'grid-no-grow',
+
+    renderRowActionMenuItems: ({ row, staticRowIndex, table }) => [
+      <MenuItem key="download" value="download" onClick={() => props.handleDownload && props.handleDownload(row.original)}>
+        <ListItemIcon sx={{ color: "inherit" }}>
+          <FileDownload />
+        </ListItemIcon>
+        {"Download"}
+      </MenuItem>,
+      <MenuItem key="information" value="information">
+        <ListItemIcon sx={{ color: "inherit" }}>
+          <Info />
+        </ListItemIcon>
+        {"Information"}
+      </MenuItem>
+    ],
 
     renderTopToolbarCustomActions: renderTopToolbarCustomActions,
     renderToolbarInternalActions: renderToolbarInternalActions,
 
     initialState: {
       showColumnFilters: false,
+      columnPinning: { left: ['mrt-row-actions', 'state'], right: ['city'] },
     },
 
     ...props,

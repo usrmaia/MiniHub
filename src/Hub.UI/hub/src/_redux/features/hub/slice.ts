@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getItems } from "./thunks";
+import { downloadFile, getItems } from "./thunks";
 import { directory, file, items } from "@/_types";
 
 interface initialStateProps {
@@ -27,6 +27,17 @@ const hubSlice = createSlice({
   reducers: {
   },
   extraReducers: builder => {
+    builder.addCase(downloadFile.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(downloadFile.fulfilled, (state) => {
+      state.status = "succeeded";
+    });
+    builder.addCase(downloadFile.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message || null;
+    });
+
     builder.addCase(getItems.pending, (state) => {
       state.status = "loading";
     });
@@ -43,12 +54,12 @@ const hubSlice = createSlice({
     });
   },
   selectors: {
-    selectItems: (state) => state.items,
-    selectDirectories: (state) => state.directories,
-    selectFiles: (state) => state.files,
-    selectTotalCount: (state) => state.totalCount,
-    selectStatus: (state) => state.status,
-    selectError: (state) => state.error,
+    selectItems: state => state.items,
+    selectDirectories: state => state.directories,
+    selectFiles: state => state.files,
+    selectTotalCount: state => state.totalCount,
+    selectStatus: state => state.status,
+    selectError: state => state.error,
   }
 });
 

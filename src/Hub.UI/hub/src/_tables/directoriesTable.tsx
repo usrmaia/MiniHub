@@ -5,13 +5,15 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { ItemName } from "@/_components";
+import { useSnackbar } from "@/_contexts";
 import env from "@/env";
 import { selectDirectories, selectFiles, selectItems, selectStatus, selectTotalCount } from "@/_redux/features/hub/slice";
-import { getItems } from "@/_redux/features/hub/thunks";
+import { downloadFile, getItems } from "@/_redux/features/hub/thunks";
 import { AppDispatch } from "@/_redux/store";
 import { directory, file, items, itemsFilter } from "@/_types";
 import { useHubMaterialReactTable } from "./hubMaterialReactTable";
 import { ThemeContext } from "@/_theme";
+import { MenuItem } from "@mui/material";
 
 export const DirectoriesTable = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,6 +34,8 @@ export const DirectoriesTable = () => {
 
   const [globalFilter, setGlobalFilter] = useState<string>(params.get("search") ?? "");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
+
+  const snackbar = useSnackbar();
 
   const toCreate = "/directory";
   const toEdit = "/directory";
@@ -105,6 +109,16 @@ export const DirectoriesTable = () => {
     }
   };
 
+  const handleDownload = (row: directory & file) => {
+    if (env.NODE_ENV !== "production")
+      console.debug("handleDownload", row);
+
+    const extension = row.name ? row.name.split(".").slice(1, 2).join(".") : "";
+
+    if (extension) dispatch(downloadFile(row));
+    else snackbar("This is a directory, not a file.");
+  };
+
   useEffect(() => {
     const search = buildQueryString();
     const newUrl = `${window.location.pathname}?${search}`;
@@ -173,6 +187,7 @@ export const DirectoriesTable = () => {
 
     onSubmit,
     // handleDelete,
+    handleDownload,
 
     isLoading,
   });
