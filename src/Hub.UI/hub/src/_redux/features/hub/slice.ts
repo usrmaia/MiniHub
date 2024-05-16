@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { downloadFile, getItems } from "./thunks";
+import { downloadFile, getItems, uploadFile } from "./thunks";
 import { directory, file, items } from "@/_types";
 
 interface initialStateProps {
@@ -49,6 +49,17 @@ const hubSlice = createSlice({
       state.status = "succeeded";
     });
     builder.addCase(getItems.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message || null;
+    });
+
+    builder.addCase(uploadFile.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(uploadFile.fulfilled, (state) => {
+      state.status = "succeeded";
+    });
+    builder.addCase(uploadFile.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message || null;
     });

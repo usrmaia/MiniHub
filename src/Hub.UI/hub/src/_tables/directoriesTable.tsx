@@ -1,6 +1,6 @@
 "use client";
 
-import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_Row, type MRT_ColumnDef, type MRT_SortingState } from "material-react-table";
+import { type MRT_ColumnDef, type MRT_SortingState } from "material-react-table";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -8,12 +8,11 @@ import { ItemName } from "@/_components";
 import { useSnackbar } from "@/_contexts";
 import env from "@/env";
 import { selectDirectories, selectFiles, selectItems, selectStatus, selectTotalCount } from "@/_redux/features/hub/slice";
-import { downloadFile, getItems } from "@/_redux/features/hub/thunks";
+import { downloadFile, getItems, uploadFile } from "@/_redux/features/hub/thunks";
 import { AppDispatch } from "@/_redux/store";
-import { directory, file, items, itemsFilter } from "@/_types";
+import { directory, file, itemsFilter } from "@/_types";
 import { useHubMaterialReactTable } from "./hubMaterialReactTable";
 import { ThemeContext } from "@/_theme";
-import { MenuItem } from "@mui/material";
 
 export const DirectoriesTable = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -34,6 +33,7 @@ export const DirectoriesTable = () => {
 
   const [globalFilter, setGlobalFilter] = useState<string>(params.get("search") ?? "");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
+  const [directoryId, setDirectoryId] = useState<string | undefined>(params.get("directory") ?? undefined);
 
   const snackbar = useSnackbar();
 
@@ -52,16 +52,17 @@ export const DirectoriesTable = () => {
   // useEffect(() => { if (env.NODE_ENV !== "production") console.debug("rowCount", rowCount); }), [rowCount];
 
   const buildQueryString = useCallback(() => {
-    Array.from(params.keys()).forEach(key => params.delete(key));
+    // Array.from(params.keys()).forEach(key => params.delete(key));
 
     globalFilter && params.set("search", globalFilter);
     sorting.forEach(sort => params.set(sort.id + "Sort", sort.desc ? "desc" : "asc"));
+    directoryId && params.set("directory", directoryId);
 
     // if (env.NODE_ENV !== "production")
     //   console.debug("buildQueryString", params.toString());
 
     return params.toString();
-  }, [globalFilter, sorting]);
+  }, [globalFilter, sorting, directoryId]);
 
   const getQueryObject = (): itemsFilter => {
     const filter: itemsFilter = {
@@ -94,29 +95,35 @@ export const DirectoriesTable = () => {
   };
 
   const handleClick = (row: directory & file) => {
-    if (env.NODE_ENV !== "production")
-      console.debug("handleClick", row);
+    // if (env.NODE_ENV !== "production")
+    //   console.debug("handleClick", row);
 
     const extension = row.name.split(".").slice(1, 2).join(".");
 
     if (!extension) {
-      // add parent to query /hub/directories
-      params.set("parent", row.name);
-      buildQueryString();
+      setDirectoryId(row.id);
       const filter = getQueryObject();
       dispatch(getItems({ ...filter, parentId: row.id }));
-      return;
     }
   };
 
   const handleDownload = (row: directory & file) => {
-    if (env.NODE_ENV !== "production")
-      console.debug("handleDownload", row);
+    // if (env.NODE_ENV !== "production")
+    //   console.debug("handleDownload", row);
 
     const extension = row.name ? row.name.split(".").slice(1, 2).join(".") : "";
 
     if (extension) dispatch(downloadFile(row));
     else snackbar("This is a directory, not a file.");
+  };
+
+  const handleUpload = () => {
+    // if (env.NODE_ENV !== "production")
+    //   console.debug("handleUpload");
+
+    dispatch(uploadFile(directoryId));
+    const filter = getQueryObject();
+    dispatch(getItems({ ...filter, parentId: directoryId }));
   };
 
   useEffect(() => {
@@ -188,6 +195,7 @@ export const DirectoriesTable = () => {
     onSubmit,
     // handleDelete,
     handleDownload,
+    handleUpload,
 
     isLoading,
   });

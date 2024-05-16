@@ -6,10 +6,8 @@ import { useDispatch } from "react-redux";
 
 import { useDefaultMaterialReactTable } from "./defaultMaterialReactTable";
 import { AppDispatch } from "@/_redux/store";
-import { Box, Button, FormControl, IconButton, InputLabel, ListItemIcon, MenuItem, Select } from "@mui/material";
-import Link from "next/link";
-import { Add, ClearAll, Delete, Edit, Face, FileDownload, Info, Share } from "@mui/icons-material";
-import { Loading } from "@/_components";
+import { Box, FormControl, IconButton, InputLabel, ListItemIcon, MenuItem, Select } from "@mui/material";
+import { Face, FileDownload, Info, Upload } from "@mui/icons-material";
 
 interface Props<TData extends MRT_RowData> extends MRT_TableOptions<TData> {
   columns: MRT_ColumnDef<TData>[];
@@ -27,6 +25,7 @@ interface Props<TData extends MRT_RowData> extends MRT_TableOptions<TData> {
   toUpload?: string;
   handleDelete?: (id: string) => void;
   handleDownload?: (row: TData) => void;
+  handleUpload?: () => void;
 }
 
 export const useHubMaterialReactTable = <TData extends MRT_RowData>(
@@ -68,6 +67,7 @@ export const useHubMaterialReactTable = <TData extends MRT_RowData>(
 
   const renderToolbarInternalActions = ({ table }: { table: MRT_TableInstance<TData> }) => [
     <MRT_ToggleGlobalFilterButton key="globalFilter" table={table} />,
+    <IconButton key="upload" size="medium" aria-label="upload" onClick={props.handleUpload}><Upload /></IconButton>,
     // <IconButton key="share" size="medium" aria-label="teste" onClick={handleShare}><Share /></IconButton>,
     // <IconButton key="clear-filters" size="medium" onClick={handleClearFilters}><ClearAll /></IconButton>,
     <MRT_ShowHideColumnsButton key="showHideColumns" table={table} />,

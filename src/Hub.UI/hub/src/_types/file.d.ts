@@ -8,8 +8,8 @@ export type file = {
   updatedAt?: Date;
   directoryId?: string;
   directory?: directory;
-  flags: flag[];
-  roles: role[];
+  flags?: flag[];
+  roles?: role[];
   userId?: string;
   user?: user;
 };

@@ -4,6 +4,7 @@ using Hub.Application.Interfaces;
 using Hub.Domain.DTOs;
 using Hub.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hub.API.Controllers;
@@ -31,11 +32,10 @@ public class StorageController : ControllerBase
     /// Uploads a file to the storage.
     /// </summary>
     [HttpPost("upload")]
-    public async Task<IActionResult> Upload([FromForm] PostFileIM model)
+    public async Task<IActionResult> Upload([FromForm] IFormFile FormFile, [FromForm] string? DirectoryId)
     {
         var user = (UserDTO)HttpContext.Items["CurrentUserDTO"]!;
-        model.FileE!.UserId = user.Id!;
-        return Ok(await _storageService.Upload(model.FormFile, model.FileE!));
+        return Ok(await _storageService.Upload(FormFile, new FileE { DirectoryId = DirectoryId, UserId = user.Id! }));
     }
 
     /// <summary>
